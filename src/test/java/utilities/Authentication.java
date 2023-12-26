@@ -44,6 +44,7 @@ public class Authentication {
                     token = jsonResponse.getJsonObject("data.access_token");
 
                     System.out.println("tokenUser = " + token);
+                    break;
 
                 case "admintoken":
 
@@ -61,7 +62,8 @@ public class Authentication {
                     JsonPath jsonResponseAdmin = responseAdmin.jsonPath();
 
                     token = jsonResponseAdmin.getString("data.access_token");
-                    System.out.println("tokenUser = " + token);
+                    System.out.println("tokenAdmin = " + token);
+                    break;
             }
         }
 

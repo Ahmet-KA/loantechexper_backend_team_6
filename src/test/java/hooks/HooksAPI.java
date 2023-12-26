@@ -3,6 +3,7 @@ package hooks;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
+import utilities.Authentication;
 import utilities.ConfigurationReader;
 
 public class HooksAPI {
@@ -18,6 +19,6 @@ public class HooksAPI {
 
     @Before
     public void beforeGenerateToken(){
-       // token =
+       //token = Authentication.createToken();
     }
 }
