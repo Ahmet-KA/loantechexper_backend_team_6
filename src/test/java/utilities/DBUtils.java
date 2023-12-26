@@ -6,54 +6,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DB_Utils {
+public class DBUtils {
+    public static Connection connection;
+    public static Statement statement;
+    public static ResultSet resultSet;
 
-    static Connection connection;
-    private static Statement statement;
-    private static ResultSet resultSet;
+    public static String query;
+
+    //BU METHOD COK KULLANACAGIZ
+    //createConnection database e baglanmak icin. Burda url, username, password u kullanarak database baglaniyoruz
+    //Database e ne zaman baglanmak isterse bu methodu cagrabiliriz
+    //Bu method u data cok BeforeMethod icinde setup icin kullanacagiz
+    String url="jdbc:mysql://194.140.198.209/wonderworld_qa";;
+    String username=ConfigurationReader.getProperty("DBname");
+    String password=ConfigurationReader.getProperty("DBPassword");
 
 
-    public static void createConnection()  {
+    public static void createConnection() {
         String url=ConfigurationReader.getProperty("db_credentials_url");
-        String username=ConfigurationReader.getProperty("db_username");
-        String password=ConfigurationReader.getProperty("db_password");
-
+        String username=ConfigurationReader.getProperty("DBname");
+        String password=ConfigurationReader.getProperty("DBPassword");
         try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-    }
-
-    
-
-    public static void updateQuery(String query) throws SQLException {
-
-        int st =  statement.executeUpdate(query);
-
-        System.out.println(st);
 
     }
-
-
-    public static synchronized void update(String query) throws SQLException {
-        Statement st = connection.createStatement();
-        int ok = st.executeUpdate(query);
-        if (ok == -1) {
-            throw new SQLException("DB problem with query: " + query);
-        }
-        st.close();
-    }
-
-    /**
-     * DBUtils.executeQuery(String query); -> Execute the query and store is the result set object
-     */
 
     public static void executeQuery(String query) {
         try {
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -65,9 +50,7 @@ public class DB_Utils {
         }
     }
 
-
-
-    //    used to close the connectivity
+    //Database baglantisini sonlandirmak icin. Bu Mehtod u test tamamladiktan sonra kullaniriz
     public static void closeConnection() {
         try {
             if (resultSet != null) {
@@ -84,23 +67,11 @@ public class DB_Utils {
         }
     }
 
-
-    public static Connection getConnection() {
-        String url = "";
-        String username="";
-        String password="";
-        try {
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
-
-
-    //used to get statement
+    //Sonraki 3 methodu sadece connection,statement,resultset kullanmak istedigimizde kullaniriz
+    //connection =>DBUtils.getConnection()
+    //statement => DBUtils.getResultset()
+    //resultSet => DBUtils.getResultset()
+    //getStatement method statement object i olusturmak icin
     public static Statement getStatement() {
         try {
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -111,9 +82,10 @@ public class DB_Utils {
         return statement;
     }
 
+    //getConnection method Connection object i olusturmak icin. Bu method create createConnectiondan farkli olarak connection objesi return ediyor
 
 
-    //Use this to get the ResutSet object
+    //getResultset method Resultset object i olusturmak icin.
     public static ResultSet getResultset() {
         try {
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -123,21 +95,19 @@ public class DB_Utils {
         }
         return resultSet;
     }
-
-
-
-
-    // This method returns the number fo row in a table in the database
+    //Table da kac satir var
     public static int getRowCount() throws Exception {
         resultSet.last();
         int rowCount = resultSet.getRow();
         return rowCount;
     }
+
     /**
      * @return returns a single cell value. If the results in multiple rows and/or
      *         columns of data, only first column of the first row will be returned.
      *         The rest of the data will be ignored
      */
+
     public static Object getCellValue(String query) {
         return getQueryResultList(query).get(0).get(0);
     }
@@ -146,7 +116,9 @@ public class DB_Utils {
      *         results in multiple rows and/or columns of data, only first row will
      *         be returned. The rest of the data will be ignored
      */
+
     public static List<Object> getRowList(String query) {
+
         return getQueryResultList(query).get(0);
     }
     /**
@@ -154,16 +126,15 @@ public class DB_Utils {
      *         name. If the query results in multiple rows and/or columns of data,
      *         only first row will be returned. The rest of the data will be ignored
      */
+
     public static Map<String, Object> getRowMap(String query) {
+
         return getQueryResultMap(query).get(0);
     }
     /**
      * @return returns query result in a list of lists where outer list represents
      *         collection of rows and inner lists represent a single row
      */
-
-
-
 
     public static List<List<Object>> getQueryResultList(String query) {
         executeQuery(query);
@@ -188,9 +159,6 @@ public class DB_Utils {
      * @return list of values of a single column from the result set
      */
 
-
-
-
     public static List<Object> getColumnData(String query, String column) {
         executeQuery(query);
         List<Object> rowList = new ArrayList<>();
@@ -212,8 +180,6 @@ public class DB_Utils {
      *         key being the column name
      */
 
-
-    
     public static List<Map<String, Object>> getQueryResultMap(String query) {
         executeQuery(query);
         List<Map<String, Object>> rowList = new ArrayList<>();
@@ -234,7 +200,6 @@ public class DB_Utils {
         return rowList;
     }
 
-
     /*
      * @return List of columns returned in result set
      */
@@ -252,5 +217,14 @@ public class DB_Utils {
             e.printStackTrace();
         }
         return columns;
+    }
+
+    public static synchronized void update(String query) throws SQLException {
+        Statement st = connection.createStatement();
+        int ok = st.executeUpdate(query);
+        if (ok == -1) {
+            throw new SQLException("DB problem with query: " + query);
+        }
+        st.close();
     }
 }
