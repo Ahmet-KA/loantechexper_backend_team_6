@@ -428,4 +428,23 @@ public class API_Stepdefinitions {
         Assert.assertEquals(id,jsonPath.getInt("data[0].id"));
     }
 
+    @Given("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir")
+    public void response_bodyde_dönen_added_category_id_ile_api_categories_details_id_endpoint_ine_get_request_gönderilerek_kayıt_oluşturulduğu_doğrulanabilir() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data[\"Added category id\"]");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+        response.then().assertThat().body("data[0].id", Matchers.equalTo(id));
+    }
+
 }
