@@ -219,37 +219,50 @@ public class API_Stepdefinitions {
         Integer id = jsonPath.getInt("data[\"Added category id\"]");
         System.out.println("id = " + id);
 
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                    .when()
+
+                    .get(fullPath + "/" + id);
+
+            response.prettyPrint();
+
+            response.then().assertThat().body("data[0].id", Matchers.equalTo(id));
+
+
+        }
+
+
+        @Then("The API user verifies that the content of the data field in the response body includes {int}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {string}, {string}, {string}, {string}")
+        public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes (
+        int id, String loan_number,int user_id, int plan_id, String amount, String per_installment,
+        int installment_interval, int delay_value, String charge_per_installment, String delay_charge,
+        int given_installment, int total_installment, String application_form, String admin_feedback,int status, String
+        due_notification_sent, String approved_at, String created_at, String updated_at){
+            jsonPath = response.jsonPath();
+
+            Assert.assertEquals(id, jsonPath.getInt("data.id"));
+            Assert.assertEquals(loan_number, jsonPath.getString("data.loan_number"));
+            Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
+            Assert.assertEquals(plan_id, jsonPath.getInt("data.plan_id"));
+            Assert.assertEquals(amount, jsonPath.getString("data.amount"));
+            Assert.assertEquals(per_installment, jsonPath.getString("data.per_installment"));
+            Assert.assertEquals(installment_interval, jsonPath.getInt("data.installment_interval"));
+            Assert.assertEquals(delay_value, jsonPath.getInt("data.delay_value"));
+            Assert.assertEquals(charge_per_installment, jsonPath.getString("data.charge_per_installment"));
+            Assert.assertEquals(delay_charge, jsonPath.getString("data.delay_charge"));
+            Assert.assertEquals(given_installment, jsonPath.getInt("data.given_installment"));
+            Assert.assertEquals(total_installment, jsonPath.getInt("data.total_installment"));
+            Assert.assertEquals(application_form, jsonPath.getString("data.application_form"));
+            Assert.assertNull(admin_feedback, jsonPath.getString("data.admin_feedback"));
+            Assert.assertEquals(status, jsonPath.getInt("data.status"));
+            Assert.assertNull(due_notification_sent, jsonPath.getString("data.due_notification_sent"));
+            Assert.assertEquals(approved_at, jsonPath.getString("data.approved_at"));
+            Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
+            Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
+        }
+
 
     }
-
-
-
-
-    @Then("The API user verifies that the content of the data field in the response body includes {int}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {string}, {string}, {string}, {string}")
-    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id,String loan_number, int user_id, int plan_id ,String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
-        jsonPath = response.jsonPath();
-
-        Assert.assertEquals(id, jsonPath.getInt("data.id"));
-        Assert.assertEquals(loan_number, jsonPath.getString("data.loan_number"));
-        Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
-        Assert.assertEquals(plan_id, jsonPath.getInt("data.plan_id"));
-        Assert.assertEquals(amount, jsonPath.getString("data.amount"));
-        Assert.assertEquals(per_installment, jsonPath.getString("data.per_installment"));
-        Assert.assertEquals(installment_interval, jsonPath.getInt("data.installment_interval"));
-        Assert.assertEquals(delay_value, jsonPath.getInt("data.delay_value"));
-        Assert.assertEquals(charge_per_installment, jsonPath.getString("data.charge_per_installment"));
-        Assert.assertEquals(delay_charge, jsonPath.getString("data.delay_charge"));
-        Assert.assertEquals(given_installment, jsonPath.getInt("data.given_installment"));
-        Assert.assertEquals(total_installment, jsonPath.getInt("data.total_installment"));
-        Assert.assertEquals(application_form, jsonPath.getString("data.application_form"));
-        Assert.assertNull(admin_feedback, jsonPath.getString("data.admin_feedback"));
-        Assert.assertEquals(status, jsonPath.getInt("data.status"));
-        Assert.assertNull(due_notification_sent, jsonPath.getString("data.due_notification_sent"));
-        Assert.assertEquals(approved_at, jsonPath.getString("data.approved_at"));
-        Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
-        Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
-    }
-
-
-
-}
