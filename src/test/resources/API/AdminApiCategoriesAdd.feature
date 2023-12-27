@@ -44,4 +44,16 @@
       And   API Kullanıcısı, response body'deki error bilgisinin "Unauthorized request" oldugu dogrulanmali
 
 
+    @8
+    Scenario: "API uzerinden olusturulmak istenen yeni categories kaydinin olustugu API uzerinden dogrulanmali.
+              (Response bodyde dönen Added category id ile api categories details {{id}} endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir.)"
+
+      Given API kullanıcısı "api/categories/add" yolu parametrelerini ayarlar
+      Then  Api kullanicisi user profile endpointine gondermek icin dogru datalar iceren bir post request hazirlar
+      And   Api kullanicisi post request gonderir ve api categories add endpointinden donen responsei gecerli authorization bilgisi ile kaydeder
+      Given API kullanıcısı "api/categories/details" yolu parametrelerini ayarlar
+      And   Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir
+
+
+
 

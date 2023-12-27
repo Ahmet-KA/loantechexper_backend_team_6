@@ -60,9 +60,8 @@ public class API_Stepdefinitions {
                 .header("Accept", "application/json")
                 .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
                 .when()
-                .body(requestBody.toString())
+                .body(requestBody)
                 .patch(fullPath);
-
         response.prettyPrint();
     }
 
@@ -155,8 +154,8 @@ public class API_Stepdefinitions {
     public void apiKullanicisiUserProfileEndpointineGondermekIcinDogruDatalarIcerenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","Ahmet Kaya");
-        requestBody.put("description","about about");
+        requestBody.put("name","Ahmet Kaya01");
+        requestBody.put("description","about01");
     }
 
     @And("Api kullanicisi post request gonderir ve api categories add endpointinden donen responsei gecerli authorization bilgisi ile kaydeder")
@@ -210,6 +209,16 @@ public class API_Stepdefinitions {
 
         response.then().assertThat().body("message.error[0]",Matchers.equalTo(message));
     }
+
+
+
+    @And("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir")
+    public void responseBodydeDonenAddedCategoryIdIleApiCategoriesDetailsIdEndpointIneGETRequestGonderilerekKayıtOlusturulduguDogrulanabilir() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data[\"Added category id\"]");
+        System.out.println("id = " + id);
+
 
     @Given("The API user sets {string} path parameters")
     public void theAPIUserSetsPathParameters(String rawPaths) {
@@ -285,11 +294,22 @@ public class API_Stepdefinitions {
 
     @Then("The API user saves the response from the admin loans details id  endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoansDetailsIdEndpointWithValidAuthorizationInformation() {
+
         response = given()
                 .spec(spec)
                 .header("Accept", "application/json")
                 .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
                 .when()
+
+                .get(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+        response.then().assertThat().body("data[0].id",Matchers.equalTo(id));
+
+
+    }
+
                 .get(fullPath);
 
         response.prettyPrint();
@@ -322,6 +342,7 @@ public class API_Stepdefinitions {
         Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
         Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
     }
+
 
 
 }
