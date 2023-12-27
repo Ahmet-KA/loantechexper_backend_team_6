@@ -1,4 +1,4 @@
-Feature: US0037 As an administrator, I want to access the list of running loans via API connection.
+Feature: As an administrator, I want to access the list of running loans via API connection.
 
   Scenario: A valid GET request with appropriate authorization credentials is sent to the 'api/loans/running' endpoint,
   it is return a status code of 200, and the response remark is "success"
