@@ -1,6 +1,6 @@
   @user/profile
   Feature: Bir kullancı (user) olarak API bağlantisi üzeriden sisteme kayitli user profile bilgilerini güncelleyebilmek istiyorum.
-    @0
+    @12
     Scenario: user/profile endpoint'ine gecerli authorization bilgileri ve dogru datalar (firstname, lastname, address, state, zip, city) iceren bir PATCH body gönderildiginde
               dönen status code'in 200 oldugu ve response body'deki message bilgisinin "Profile updated successfully" oldugu dogrulanmali
 
