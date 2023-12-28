@@ -567,4 +567,16 @@ public class API_Stepdefinitions {
 
     }
 
+    @Then("endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir ve kaydedilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirVeKaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
 }
