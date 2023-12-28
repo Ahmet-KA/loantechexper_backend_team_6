@@ -113,7 +113,7 @@ public class API_Stepdefinitions {
     @And("API Kullanıcısı, response body'deki remark bilgisinin {string} oldugu dogrulanmali")
     public void apıKullanıcısıResponseBodyDekiRemarkBilgisininOlduguDogrulanmali(String message) {
 
-        response.then().assertThat().body("remark",Matchers.equalTo(message));
+        response.then().assertThat().body("remark", Matchers.equalTo(message));
 
     }
 
@@ -155,8 +155,8 @@ public class API_Stepdefinitions {
     public void apiKullanicisiUserProfileEndpointineGondermekIcinDogruDatalarIcerenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","Ahmet Kaya");
-        requestBody.put("description","about about");
+        requestBody.put("name", "Ahmet Kaya");
+        requestBody.put("description", "about about");
     }
 
     @And("Api kullanicisi post request gonderir ve api categories add endpointinden donen responsei gecerli authorization bilgisi ile kaydeder")
@@ -178,15 +178,15 @@ public class API_Stepdefinitions {
     public void apiKullanicisiUserProfileEndpointineGondermekIcinEksikDatalarIcerenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","Ahmet Kaya");
+        requestBody.put("name", "Ahmet Kaya");
     }
 
     @Then("Api kullanicisi user profile endpointine gondermek icin data icermeyen bir post request hazirlar")
     public void apiKullanicisiUserProfileEndpointineGondermekIcinDataIcermeyenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","");
-        requestBody.put("description","");
+        requestBody.put("name", "");
+        requestBody.put("description", "");
     }
 
 
@@ -208,7 +208,7 @@ public class API_Stepdefinitions {
     @And("API Kullanıcısı, response body'deki error bilgisinin {string} oldugu dogrulanmali")
     public void apıKullanıcısıResponseBodyDekiErrorBilgisininOlduguDogrulanmali(String message) {
 
-        response.then().assertThat().body("message.error[0]",Matchers.equalTo(message));
+        response.then().assertThat().body("message.error[0]", Matchers.equalTo(message));
     }
 
     @Given("The API user sets {string} path parameters")
@@ -256,6 +256,7 @@ public class API_Stepdefinitions {
                 .statusCode(status);
 
     }
+
     @And("The API user verifies that the remark information in the response body is {string}")
     public void theAPIUserVerifiesThatTheRemarkInformationInTheResponseBodyIs(String remark) {
         response.then()
@@ -280,7 +281,6 @@ public class API_Stepdefinitions {
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
 
 
-
     }
 
     @Then("The API user saves the response from the admin loans details id  endpoint with valid authorization information")
@@ -296,10 +296,8 @@ public class API_Stepdefinitions {
     }
 
 
-
-
     @Then("The API user verifies that the content of the data field in the response body includes {int}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {string}, {string}, {string}, {string}")
-    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id,String loan_number, int user_id, int plan_id ,String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
+    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id, String loan_number, int user_id, int plan_id, String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
         jsonPath = response.jsonPath();
 
         Assert.assertEquals(id, jsonPath.getInt("data.id"));
@@ -324,4 +322,133 @@ public class API_Stepdefinitions {
     }
 
 
+    @Then("The API user saves the response from the admin loanplans list endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoanplansListEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+
+    @And("The API user saves the response from the admin loanplans details id endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoanplansDetailsIdEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+
+
+    @Then("Verify the information of the one with the id {int} in the API user response body: {int}, {int},{string}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}, {int}, {string}, {string}, {int}, {int}, {string}, {string}")
+    public void verify_the_information_of_the_one_with_the_id_in_the_apı_user_response_body(int dataIndex, int categoryId, int formId, String name, String title, String minimum_amount, String maximum_amount, String per_installment, int installment_interval, int total_installment, String application_fixed_charge, String application_percent_charge, String instruction, int delay_value, String fixed_charge, String percent_charge, int is_featured, int status, String created_at, String updated_at) {
+
+        jsonPath = response.jsonPath();
+
+        Assert.assertEquals(categoryId, jsonPath.getInt("data[" + dataIndex + "].category_id"));
+        Assert.assertEquals(formId, jsonPath.getInt("data[" + dataIndex + "].form_id"));
+        Assert.assertEquals(name, jsonPath.getString("data[" + dataIndex + "].name"));
+        Assert.assertEquals(title, jsonPath.getString("data[" + dataIndex + "].title"));
+        Assert.assertEquals(minimum_amount, jsonPath.getString("data[" + dataIndex + "].minimum_amount"));
+        Assert.assertEquals(maximum_amount, jsonPath.getString("data[" + dataIndex + "].maximum_amount"));
+        Assert.assertEquals(per_installment, jsonPath.getString("data[" + dataIndex + "].per_installment"));
+        Assert.assertEquals(installment_interval, jsonPath.getInt("data[" + dataIndex + "].installment_interval"));
+        Assert.assertEquals(total_installment, jsonPath.getInt("data[" + dataIndex + "].total_installment"));
+        Assert.assertEquals(application_fixed_charge, jsonPath.getString("data[" + dataIndex + "].application_fixed_charge"));
+        Assert.assertEquals(application_percent_charge, jsonPath.getString("data[" + dataIndex + "].application_percent_charge"));
+        Assert.assertEquals(instruction, jsonPath.getString("data[" + dataIndex + "].instruction"));
+        Assert.assertEquals(delay_value, jsonPath.getInt("data[" + dataIndex + "].delay_value"));
+        Assert.assertEquals(fixed_charge, jsonPath.getString("data[" + dataIndex + "].fixed_charge"));
+        Assert.assertEquals(percent_charge, jsonPath.getString("data[" + dataIndex + "].percent_charge"));
+        Assert.assertEquals(is_featured, jsonPath.getInt("data[" + dataIndex + "].is_featured"));
+        Assert.assertEquals(status, jsonPath.getInt("data[" + dataIndex + "].status"));
+        Assert.assertEquals(created_at, jsonPath.getString("data[" + dataIndex + "].created_at"));
+        Assert.assertEquals(updated_at, jsonPath.getString("data[" + dataIndex + "].updated_at"));
+    }
+
+    @Then("The API user prepares a POST request containing the correct data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_containing_the_correct_data_to_send_to_the_user_ticket_add_endpoint() {
+   /*
+    {
+    "subject":"Blue Test Ticket",
+    "priority":"priority",
+    "message":"Blue Test Ticket Message-"
+   }
+   */   //id 184
+
+        requestBody = new JSONObject();
+        requestBody.put("subject", "Blue Test Ticket");
+        requestBody.put("priority", "priority");
+        requestBody.put("message", "Blue Test Ticket Message-");
+
+    }
+
+    @Then("The API user sends a POST request and saves the response from the user ticket add endpoint with valid authorization information")
+    public void the_apı_user_sends_a_post_request_and_saves_the_response_from_the_user_ticket_add_endpoint_with_valid_authorization_information() {
+      response= given()
+              .spec(spec).contentType(ContentType.JSON)
+              .header("Accept", "application/json")
+              .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+              .when().body(requestBody.toString())
+              .post(fullPath);
+
+      response.prettyPrint();
+    }
+
+    @Then("The API user verifies that the message information in the response body is {string}")
+    public void the_apı_user_verifies_that_the_message_information_in_the_response_body_is(String message) {
+
+        response.then().assertThat().body("message",Matchers.equalTo(message));
+    }
+
+    @Given("The API user prepares a POST request containing no data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_containing_no_data_to_send_to_the_user_ticket_add_endpoint() {
+     requestBody=new JSONObject();
+    }
+
+    @Given("The API user prepares a POST request with incomplete missing data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_with_incomplete_missing_data_to_send_to_the_user_ticket_add_endpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("subject", "Blue Test Ticket");
+    }
+
+    @Given("The API user sends a POST request and saves the response from the user ticket add endpoint with invalid authorization information")
+    public void the_apı_user_sends_a_post_request_and_saves_the_response_from_the_user_ticket_add_endpoint_with_invalid_authorization_information() {
+        response= given()
+                .spec(spec).contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization","Bearer "+"invalidToken")
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+    @Given("The API user verifies that the error message in the response body is {string}")
+    public void the_apı_user_verifies_that_the_error_message_in_the_response_body_is(String errorMessage) {
+        response.then().assertThat().body("message.error[0]",Matchers.equalTo(errorMessage));
+
+    }
+    @Given("The API user saves the response from the user ticket detail endpoint with valid authorization information")
+    public void the_apı_user_saves_the_response_from_the_user_ticket_detail_endpoint_with_valid_authorization_information() {
+        response=given().spec(spec).header("Accept", "application/json")
+                .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+    @Given("The API user verifies that the success value in the response body is true")
+    public void the_apı_user_verifies_that_the_success_value_in_the_response_body_is_true() {
+        response.then().assertThat().body("success",Matchers.equalTo(true));
+    }
+
+    @And("The API user verifies that the id value in the response body is {int}")
+    public void theAPIUserVerifiesThatTheIdValueInTheResponseBodyIsDataId(int dataId) {
+        jsonPath=response.jsonPath();
+        Assert.assertEquals(dataId,jsonPath.getInt("data.id"));
+    }
 }
