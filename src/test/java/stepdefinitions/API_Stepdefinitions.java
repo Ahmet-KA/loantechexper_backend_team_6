@@ -442,6 +442,51 @@ public class API_Stepdefinitions {
         response.then().assertThat().body("data[0].id", Matchers.equalTo(id));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @And("It is verified that the created record has been deleted by sending a DELETE request to the api loanplans delete id endpoint with the Added plan id returned in the response body.")
     public void ıtIsVerifiedThatTheCreatedRecordHasBeenDeletedBySendingADELETERequestToTheApiLoanplansDeleteIdEndpointWithTheAddedPlanIdReturnedInTheResponseBody() {
 
@@ -500,11 +545,7 @@ public class API_Stepdefinitions {
     }
 
 
-    @Then("The API user verifies that the status code is {int} And The API user verifies that the error information in the response body is {string}")
-    public void theAPIUserVerifiesThatTheStatusCodeIsAndTheAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(int status, String message) {
 
-
-    }
 
     @Then("A DELETE body is sent with invalid authorization information and the response is recorded.Then  The API user verifies that the status code is {int} And The API user verifies that the error information in the response body is {string}")
     public void aDELETEBodyIsSentWithInvalidAuthorizationInformationAndTheResponseIsRecordedThenTheAPIUserVerifiesThatTheStatusCodeIsAndTheAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(int status, String message) {

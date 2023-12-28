@@ -45,7 +45,7 @@
        | id |
        | 12 |
 
-
+  @13
   Scenario: "It must be verified via the API that the loanplans record to be deleted via the API has been deleted.
            (You can verify that the record has been deleted by sending a GET request to the api/loanplans/details/{{id}} endpoint with the Deleted loan plan id returned in the response body.)"
 
