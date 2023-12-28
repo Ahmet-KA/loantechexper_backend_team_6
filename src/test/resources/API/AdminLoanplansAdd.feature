@@ -45,7 +45,7 @@ Feature: As an administrator, I want to create a new loan plan record via API co
     Then The API user verifies that the id information in the response body is <valueId>
 
     Examples:
-      | id | valueId |
-      | 98 | 98      |
+      | id  | valueId |
+      | 103 | 103     |
 
 

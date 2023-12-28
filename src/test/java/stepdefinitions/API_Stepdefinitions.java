@@ -328,8 +328,8 @@ public class API_Stepdefinitions {
 
         requestBody = new JSONObject();
         requestBody.put("category_id", 1);
-        requestBody.put("name", "King Loan 12 ");
-        requestBody.put("title", "King Loan 12");
+        requestBody.put("name", "King Loan 15 ");
+        requestBody.put("title", "King Loan 15");
         requestBody.put("total_installment", 20);
         requestBody.put("installment_interval", 20);
         requestBody.put("per_installment", "4.00");
@@ -341,7 +341,7 @@ public class API_Stepdefinitions {
         requestBody.put("is_featured", 0);
         requestBody.put("application_fixed_charge", "20.00000000");
         requestBody.put("application_percent_charge", "3.00000000");
-        requestBody.put("instruction", "King Loan Plan 12");
+        requestBody.put("instruction", "King Loan Plan 15");
 
 
     }
@@ -388,7 +388,7 @@ public class API_Stepdefinitions {
                 .spec(spec)
                 .contentType(ContentType.JSON)
                 .header("Accept", "application/json")
-                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("invalidToken"))
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
                 .when()
                 .body(requestBody.toString())
                 .post(fullPath);
@@ -441,4 +441,130 @@ public class API_Stepdefinitions {
 
         response.then().assertThat().body("data[0].id", Matchers.equalTo(id));
     }
+
+
+    @And("The API user saves the response from the admin loans approve endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoansApproveEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("The API user verifies that the message information in the response body is {string}")
+    public void the_api_user_verifies_that_the_message_information_in_the_response_body_is(String message) {
+        response.then()
+                .assertThat()
+                .body("message", Matchers.equalTo(message));
+    }
+
+    @And("The API User verifies that the message information in the response body is {string}")
+    public void theAPIUserVerifiesThatTheMessageInformationInTheResponseBodyIs(String message) {
+        response.then()
+                .assertThat()
+                .body("data.message",Matchers.equalTo(message));
+    }
+
+
+    @When("The API user sends a POST request and saves the response from the admin loans approve endpoint with invalid authorization information verifies that the status code is '401' and confirms that the error information is Unauthorized")
+    public void theAPIUserSendsAPOSTRequestAndSavesTheResponseFromTheAdminLoansApproveEndpointWithInvalidAuthorizationInformation() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    @And("It is verified that the created record has been deleted by sending a DELETE request to the api loanplans delete id endpoint with the Added plan id returned in the response body.")
+    public void ıtIsVerifiedThatTheCreatedRecordHasBeenDeletedBySendingADELETERequestToTheApiLoanplansDeleteIdEndpointWithTheAddedPlanIdReturnedInTheResponseBody() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data[\"Added plan id\"]");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+        jsonPath = response.jsonPath();
+        Integer deleteId = jsonPath.getInt("data[\"Deleted loan plan id\"]");
+        System.out.println("deleteId = " + deleteId);
+
+        Assert.assertEquals(id,deleteId);
+    }
+
+
+    @Then("A DELETE request that does not contain \\(id) is sent and the response is recorded.")
+    public void aDELETERequestThatDoesNotContainIdIsSentAndTheResponseIsRecorded() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("It must be verified that the message information in the response body is {string}")
+    public void ıtMustBeVerifiedThatTheMessageInformationInTheResponseBodyIs(String message) {
+
+        response.then().assertThat().body("data.message",Matchers.equalTo(message));
+    }
+
+
+    @Then("A DELETE request containing an unregistered \\(id) is sent and the response is recorded.")
+    public void aDELETERequestContainingAnUnregisteredIdIsSentAndTheResponseIsRecorded() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+
+
+
+    @Then("A DELETE body is sent with invalid authorization information and the response is recorded.Then  The API user verifies that the status code is {int} And The API user verifies that the error information in the response body is {string}")
+    public void aDELETEBodyIsSentWithInvalidAuthorizationInformationAndTheResponseIsRecordedThenTheAPIUserVerifiesThatTheStatusCodeIsAndTheAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(int status, String message) {
+
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("admin"))
+                    .when()
+                    .delete(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
 }
