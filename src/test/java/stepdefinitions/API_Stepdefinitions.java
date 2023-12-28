@@ -3,7 +3,11 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+
+import io.restassured.builder.RequestSpecBuilder;
+
 import io.cucumber.java.en.When;
+
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,6 +21,7 @@ import java.util.Arrays;
 
 import static hooks.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertTrue;
 
 public class API_Stepdefinitions {
 
@@ -29,7 +34,7 @@ public class API_Stepdefinitions {
 
     @Given("API kullanıcısı {string} yolu parametrelerini ayarlar")
     public void apı_kullanıcısı_yolu_parametrelerini_ayarlar(String rawPaths) {
-
+        spec = new RequestSpecBuilder().setBaseUri(ConfigurationReader.getProperty("baseUrl")).build();
         String[] paths = rawPaths.split("/");
 
         System.out.println(Arrays.toString(paths));
@@ -147,7 +152,7 @@ public class API_Stepdefinitions {
             mesaj = e.getMessage();
         }
 
-        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
 
     }
 
@@ -212,6 +217,7 @@ public class API_Stepdefinitions {
         response.then().assertThat().body("message.error[0]", Matchers.equalTo(message));
     }
 
+
     @Given("The API user sets {string} path parameters")
     public void theAPIUserSetsPathParameters(String rawPaths) {
         String[] paths = rawPaths.split("/");
@@ -240,6 +246,7 @@ public class API_Stepdefinitions {
 
     @Then("The API user saves the response from the admin loans running endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoansRunningEndpointWithValidAuthorizationInformation() {
+
         response = given()
                 .spec(spec)
                 .header("Accept", "application/json")
@@ -249,6 +256,7 @@ public class API_Stepdefinitions {
 
         response.prettyPrint();
     }
+
 
     @And("The API user verifies that the status code is {int}")
     public void theAPIUserVerifiesThatTheStatusCodeIs(int status) {
@@ -267,20 +275,27 @@ public class API_Stepdefinitions {
 
     @And("The API user records the response with invalid authorization information, verifies that the status code is '401' and confirms that the error information is Unauthorized")
     public void theAPIUserRecordsTheResponseWithInvalidAuthorizationInformationVerifiesThatTheStatusCodeIsAndConfirmsThatTheErrorInformationIsUnauthorized() {
+
         try {
             response = given()
                     .spec(spec)
                     .header("Accept", "application/json")
+
+                    .headers("Authorization", "Bearer " + Authentication.createToken("username"))
+
                     .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+
                     .when()
                     .get(fullPath);
         } catch (Exception e) {
             mesaj = e.getMessage();
         }
+
+        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
         System.out.println("mesaj: " + mesaj);
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
-
 
     }
 
@@ -466,7 +481,7 @@ public class API_Stepdefinitions {
     public void theAPIUserVerifiesThatTheMessageInformationInTheResponseBodyIs(String message) {
         response.then()
                 .assertThat()
-                .body("data.message",Matchers.equalTo(message));
+                .body("data.message", Matchers.equalTo(message));
     }
 
 
@@ -488,6 +503,8 @@ public class API_Stepdefinitions {
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
     }
+
+
 
     @And("It is verified that the created record has been deleted by sending a DELETE request to the api loanplans delete id endpoint with the Added plan id returned in the response body.")
     public void ıtIsVerifiedThatTheCreatedRecordHasBeenDeletedBySendingADELETERequestToTheApiLoanplansDeleteIdEndpointWithTheAddedPlanIdReturnedInTheResponseBody() {
@@ -578,5 +595,80 @@ public class API_Stepdefinitions {
                 .get(fullPath);
 
         response.prettyPrint();
+    }
+
+    //murat
+    @Given("API kullanicisi GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    //murat
+    @Given("API kullanicisi GET request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .get(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    //murat
+    @Given("API kullanıcısı donen PATCH response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanıcısı_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    //murat
+    @Then("API Kullanıcısı, response body'deki data.message bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanıcısı_response_body_deki_data_message_bilgisinin_oldugu_dogrulanmali(String message) {
+        jsonPath = response.jsonPath();
+        response.then().assertThat().body("data.message", Matchers.equalTo(message));
+    }
+
+    //murat
+    @Given("API kullanicisi PATCH request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_patch_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
     }
 }
