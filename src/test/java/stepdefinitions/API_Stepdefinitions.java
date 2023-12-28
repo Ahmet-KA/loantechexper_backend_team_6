@@ -3,6 +3,7 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -322,6 +323,7 @@ public class API_Stepdefinitions {
     }
 
 
+
     @Then("The API user saves the response from the admin loanplans list endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoanplansListEndpointWithValidAuthorizationInformation() {
         response = given()
@@ -333,7 +335,89 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 
-    @And("The API user saves the response from the admin loanplans details id endpoint with valid authorization information")
+
+
+    @And("The API user prepares a POST request containing the correct data to send to the admin loanplans add endpoint")
+    public void theAPIUserPreparesAPOSTRequestContainingTheCorrectDataToSendToTheAdminLoanplansAddEndpoint() {
+
+        requestBody = new JSONObject();
+        requestBody.put("category_id", 1);
+        requestBody.put("name", "King Loan 15 ");
+        requestBody.put("title", "King Loan 15");
+        requestBody.put("total_installment", 20);
+        requestBody.put("installment_interval", 20);
+        requestBody.put("per_installment", "4.00");
+        requestBody.put("minimum_amount", "2000.00000000");
+        requestBody.put("maximum_amount", "5000.00000000");
+        requestBody.put("delay_value", 25);
+        requestBody.put("fixed_charge", "100.00000000");
+        requestBody.put("percent_charge", "1.00000000");
+        requestBody.put("is_featured", 0);
+        requestBody.put("application_fixed_charge", "20.00000000");
+        requestBody.put("application_percent_charge", "3.00000000");
+        requestBody.put("instruction", "King Loan Plan 15");
+
+
+    }
+
+    @Then("The API user saves the response from the admin loanplans add endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoanplansAddEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+
+    @And("The API user prepares a POST request with missing data to send to the admin loanplans add endpoint.")
+    public void theAPIUserPreparesAPOSTRequestWithMissingDataToSendToTheAdminLoanplansAddEndpoint() {
+        requestBody = new JSONObject();
+        requestBody.put("per_installment", "4.00");
+        requestBody.put("minimum_amount", "2000.00000000");
+        requestBody.put("maximum_amount", "5000.00000000");
+        requestBody.put("delay_value", 25);
+        requestBody.put("fixed_charge", "100.00000000");
+        requestBody.put("percent_charge", "1.00000000");
+        requestBody.put("is_featured", 0);
+        requestBody.put("application_fixed_charge", "20.00000000");
+        requestBody.put("application_percent_charge", "3.00000000");
+        requestBody.put("instruction", "King Loan Plan 10");
+    }
+
+    @And("The API user prepares a POST request without data to send to the admin loanplans add endpoint")
+    public void theAPIUserPreparesAPOSTRequestWithoutDataToSendToTheAdminLoanplansAddEndpoint() {
+        requestBody = new JSONObject();
+    }
+
+
+    @When("The API user sends a POST request and saves the response from the admin loanplans add endpoint with invalid authorization information")
+    public void theAPIUserSendsAPOSTRequestAndSavesTheResponseFromTheAdminLoanplansAddEndpointWithInvalidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user verifies that the error information in the response body is {string}")
+    public void theAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(String error) {
+        response.then()
+                .assertThat()
+                .body("message.error[0]", Matchers.equalTo(error));
+    }
+
+    @Then("The API user saves the response from the admin loanplans details id  endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoanplansDetailsIdEndpointWithValidAuthorizationInformation() {
         response = given()
                 .spec(spec)
@@ -341,8 +425,12 @@ public class API_Stepdefinitions {
                 .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
                 .when()
                 .get(fullPath);
+
+
+
         response.prettyPrint();
     }
+
 
 
     @Then("Verify the information of the one with the id {int} in the API user response body: {int}, {int},{string}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}, {int}, {string}, {string}, {int}, {int}, {string}, {string}")
@@ -422,7 +510,7 @@ public class API_Stepdefinitions {
         response= given()
                 .spec(spec).contentType(ContentType.JSON)
                 .header("Accept", "application/json")
-                .headers("Authorization","Bearer "+"invalidToken")
+                .headers("Authorization","Bearer "+ ConfigurationReader.getProperty("invalidToken"))
                 .when().body(requestBody.toString())
                 .post(fullPath);
 
@@ -436,7 +524,7 @@ public class API_Stepdefinitions {
     @Given("The API user saves the response from the user ticket detail endpoint with valid authorization information")
     public void the_apı_user_saves_the_response_from_the_user_ticket_detail_endpoint_with_valid_authorization_information() {
         response=given().spec(spec).header("Accept", "application/json")
-                .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+                .headers("Authorization","Bearer "+Authentication.createToken("adminToken"))
                 .when()
                 .get(fullPath);
         response.prettyPrint();
@@ -451,4 +539,7 @@ public class API_Stepdefinitions {
         jsonPath=response.jsonPath();
         Assert.assertEquals(dataId,jsonPath.getInt("data.id"));
     }
+
+
+
 }

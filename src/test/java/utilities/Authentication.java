@@ -38,7 +38,7 @@ public class Authentication {
                     Response responseUser = given().contentType(ContentType.JSON)
                             .spec(spec).when().body(dataCreate).post("/{first}/{second}");
 
-                    responseUser.prettyPrint();
+
                     JsonPath jsonResponse = responseUser.jsonPath();
 
                     token = jsonResponse.getJsonObject("data.access_token");
@@ -57,7 +57,7 @@ public class Authentication {
                     Response responseAdmin = given().contentType(ContentType.JSON)
                             .spec(spec).when().body(dataAdminCreate).post("/{first}/{second}");
 
-                    responseAdmin.prettyPrint();
+
                     JsonPath jsonResponseAdmin = responseAdmin.jsonPath();
                     token = jsonResponseAdmin.getString("data.access_token");
                     System.out.println("tokenAdmin = " + token);
