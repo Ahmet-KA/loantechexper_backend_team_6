@@ -10,8 +10,8 @@ import org.junit.runner.RunWith;
                 "json:target/json-reports/cucumber.json",
                 "junit:target/xml-report/cucumber.xml"},
         features = "src/test/resources/API",
-        glue = "stepdefinitions",
-        tags = "@token",
+        glue = {"stepdefinitions","hooks"},
+        tags = "@8",
         dryRun = false
 )
 public class API_Runner {
