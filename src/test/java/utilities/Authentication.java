@@ -32,7 +32,7 @@ public class Authentication {
                     spec.pathParams("first", "api", "second", "usertoken");
 
                     Map<String, Object> dataCreate = new HashMap<>();
-                    dataCreate.put("username", ConfigurationReader.getProperty("usernameAfife"));
+                    dataCreate.put("username", ConfigurationReader.getProperty("username"));
                     dataCreate.put("password", ConfigurationReader.getProperty("password"));
 
                     Response responseUser = given().contentType(ContentType.JSON)

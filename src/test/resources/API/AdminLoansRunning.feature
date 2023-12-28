@@ -11,7 +11,7 @@ Feature: As an administrator, I want to access the list of running loans via API
   it is return a status code of 401, and the response error message is "Unauthorized request"
     Given The API user sets "api/loans/running" path parameters
     And The API user records the response with invalid authorization information, verifies that the status code is '401' and confirms that the error information is Unauthorized
-
+  @15
   Scenario Outline: Verify the information (loan_number, user_id, plan_id, amount, per_installment, installment_interval, delay_value, charge_per_installment, delay_charge, given_installment,
   total_installment, admin_feedback, status, due_notification_sent, approved_at, created_at, updated_at) returned in the response for Id(x)
     Given The API user sets "api/loans/details/<id>" path parameters
