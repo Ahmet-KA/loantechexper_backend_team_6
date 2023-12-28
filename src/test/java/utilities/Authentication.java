@@ -11,16 +11,16 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
+
 public class Authentication {
 
     private Authentication() {
 
     }
 
-    private static RequestSpecification spec;
     public static String token;
-
-    public static void createToken(String pathParamsUri) {
+    public static RequestSpecification spec;
+    public static String createToken(String pathParamsUri) {
 
         if (spec == null) {
 
@@ -42,7 +42,6 @@ public class Authentication {
                     JsonPath jsonResponse = responseUser.jsonPath();
 
                     token = jsonResponse.getJsonObject("data.access_token");
-
                     System.out.println("tokenUser = " + token);
                     break;
 
@@ -60,13 +59,13 @@ public class Authentication {
 
                     responseAdmin.prettyPrint();
                     JsonPath jsonResponseAdmin = responseAdmin.jsonPath();
-
                     token = jsonResponseAdmin.getString("data.access_token");
                     System.out.println("tokenAdmin = " + token);
                     break;
             }
         }
 
+        return token;
 
     }
 

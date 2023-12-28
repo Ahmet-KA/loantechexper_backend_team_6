@@ -1,24 +1,17 @@
 package hooks;
 
+import io.cucumber.java.Before;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Before;
-import utilities.Authentication;
 import utilities.ConfigurationReader;
 
 public class HooksAPI {
 
     public static RequestSpecification spec;
 
-    public static  String token;
-
-    @Before
+    @Before(order = 0)
     public void setUpApi(){
-        //spec = new RequestSpecBuilder().setBaseUri(ConfigurationReader.getProperty("base_url")).build();
+        spec = new RequestSpecBuilder().setBaseUri(ConfigurationReader.getProperty("baseUrl")).build();
     }
 
-    @Before
-    public void beforeGenerateToken(){
-       //token = Authentication.createToken();
-    }
 }
