@@ -11,7 +11,7 @@ Feature: As an administrator, I want to be able to approve the loan information 
     Examples:
       | id  |
       | 372 |
-
+  @21
   Scenario Outline: Verify that when a PATCH request with valid authorization information and a previously approved (id) is sent to the 'api/loans/approve/{{id}}' endpoint,
   the returned status code is 203, and the message information in the response body is "No loan or loan status is not pending."
 
@@ -23,7 +23,7 @@ Feature: As an administrator, I want to be able to approve the loan information 
     Examples:
       | id  |
       | 370 |
-
+  @22
   Scenario Outline: A valid authorization information and a PATCH body without (id) are sent to the api/loans/approve/{{id}} endpoint,
   it is verified that the returned status code is 203 and the message in the response body is "No id"
 
