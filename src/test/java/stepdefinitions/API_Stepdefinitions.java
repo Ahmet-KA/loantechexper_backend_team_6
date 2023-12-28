@@ -503,39 +503,5 @@ public class API_Stepdefinitions {
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
     }
 
-    //murat
-    @Given("API kullanicisi GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
-    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
-        response = given()
-                .spec(spec)
-                .header("Accept", "application/json")
-                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
-                .when()
-                .get(fullPath);
-
-        response.prettyPrint();
-
-    }
-
-    //murat
-    @Given("API kullanicisi GET request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
-    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
-        try {
-            response = given()
-                    .spec(spec)
-                    .header("Accept", "application/json")
-                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
-                    .when()
-                    .get(fullPath);
-
-            response.prettyPrint();
-        } catch (Exception e) {
-            mesaj = e.getMessage();
-        }
-        System.out.println("mesaj: " + mesaj);
-
-        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
-    }
-
 
 }
