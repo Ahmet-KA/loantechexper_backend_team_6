@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DBNavigator.Project.DatabaseBrowserManager">
+    <autoscroll-to-editor value="false" />
+    <autoscroll-from-editor value="true" />
+    <show-object-properties value="true" />
+    <loaded-nodes />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
@@ -42,7 +48,6 @@
       </filters>
       <sorting>
         <object-type name="COLUMN" sorting-type="NAME" />
-<<<<<<< HEAD
         <object-type name="FUNCTION" sorting-type="NAME" />
         <object-type name="PROCEDURE" sorting-type="NAME" />
         <object-type name="ARGUMENT" sorting-type="POSITION" />
@@ -50,15 +55,6 @@
       </sorting>
       <default-editors>
         <object-type name="VIEW" editor-type="SELECTION" />
-=======
-        <object-type name="FUNCTİON" sorting-type="NAME" />
-        <object-type name="PROCEDURE" sorting-type="NAME" />
-        <object-type name="ARGUMENT" sorting-type="POSITION" />
-        <object-type name="TYPE ATTRİBUTE" sorting-type="POSITION" />
-      </sorting>
-      <default-editors>
-        <object-type name="VİEW" editor-type="SELECTION" />
->>>>>>> f626dfe9693115a127f0b96b6676038c2b58d37d
         <object-type name="PACKAGE" editor-type="SELECTION" />
         <object-type name="TYPE" editor-type="SELECTION" />
       </default-editors>
@@ -69,7 +65,6 @@
           <object-type name="SCHEMA" enabled="true" />
           <object-type name="USER" enabled="false" />
           <object-type name="ROLE" enabled="false" />
-<<<<<<< HEAD
           <object-type name="PRIVILEGE" enabled="false" />
           <object-type name="CHARSET" enabled="false" />
           <object-type name="TABLE" enabled="true" />
@@ -88,26 +83,6 @@
           <object-type name="DIMENSION" enabled="false" />
           <object-type name="CLUSTER" enabled="false" />
           <object-type name="DBLINK" enabled="true" />
-=======
-          <object-type name="PRİVİLEGE" enabled="false" />
-          <object-type name="CHARSET" enabled="false" />
-          <object-type name="TABLE" enabled="true" />
-          <object-type name="VİEW" enabled="true" />
-          <object-type name="MATERİALİZED VİEW" enabled="true" />
-          <object-type name="İNDEX" enabled="true" />
-          <object-type name="CONSTRAİNT" enabled="true" />
-          <object-type name="DATASET TRİGGER" enabled="true" />
-          <object-type name="DATABASE TRİGGER" enabled="true" />
-          <object-type name="SYNONYM" enabled="false" />
-          <object-type name="SEQUENCE" enabled="true" />
-          <object-type name="PROCEDURE" enabled="true" />
-          <object-type name="FUNCTİON" enabled="true" />
-          <object-type name="PACKAGE" enabled="true" />
-          <object-type name="TYPE" enabled="true" />
-          <object-type name="DİMENSİON" enabled="false" />
-          <object-type name="CLUSTER" enabled="false" />
-          <object-type name="DBLİNK" enabled="true" />
->>>>>>> f626dfe9693115a127f0b96b6676038c2b58d37d
         </lookup-objects>
         <force-database-load value="false" />
         <prompt-connection-selection value="true" />
@@ -186,10 +161,7 @@
       <confirmations>
         <save-changes value="false" />
         <revert-changes value="true" />
-<<<<<<< HEAD
         <exit-on-changes value="ASK" />
-=======
->>>>>>> f626dfe9693115a127f0b96b6676038c2b58d37d
       </confirmations>
     </code-editor-settings>
     <code-completion-settings>
