@@ -686,8 +686,68 @@ public class API_Stepdefinitions {
     }
 
 
+    @Then("The API user saves the response from the admin deposit delete endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminDepositDeleteEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("The API user saves the response from the admin deposit delete endpoint with invalid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminDepositDeleteEndpointWithInvalidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                .when()
+                .body(requestBody.toString())
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
 
 
 
+    @When("The API user sends a delete request and saves the response from the admin loans approve endpoint with invalid authorization information verifies that the status code is '401' and confirms that the error information is Unauthorized")
+    public void theAPIUserSendsADeleteRequestAndSavesTheResponseFromTheAdminLoansApproveEndpointWithInvalidAuthorizationInformationVerifiesThatTheStatusCodeIsAndConfirmsThatTheErrorInformationIsUnauthorized() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
 
+                    .headers("Authorization", "Bearer " + Authentication.createToken("username"))
+
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+
+                    .when()
+                    .delete(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+
+        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+
+    @Then("The API user saves the get response from the admin deposit details endpoint with valid authorization information")
+    public void theAPIUserSavesTheGetResponseFromTheAdminDepositDetailsEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
 }
