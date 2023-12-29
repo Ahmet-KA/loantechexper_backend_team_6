@@ -35,7 +35,7 @@ Feature: As an administrator, I want to create a new loan plan record via API co
     When The API user sends a POST request and saves the response from the admin loanplans add endpoint with invalid authorization information
     Then The API user verifies that the status code is 401
     And The API user verifies that the error information in the response body is "Unauthorized request"
-
+  @23
   Scenario Outline: The creation of the desired loanplans record through the API should be verified. This can be confirmed by sending a GET request to the api/loanplans/details/{{id}} endpoint
   with the Added plan id returned in the response body to ensure that the record has been successfully created
     Given The API user sets "api/loanplans/details/<id>" path parameters
@@ -45,7 +45,7 @@ Feature: As an administrator, I want to create a new loan plan record via API co
     Then The API user verifies that the id information in the response body is <valueId>
 
     Examples:
-      | id | valueId |
-      | 98 | 98      |
+      | id  | valueId |
+      | 103 | 103     |
 
 

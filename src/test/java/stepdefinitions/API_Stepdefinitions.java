@@ -3,7 +3,11 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+
+import io.restassured.builder.RequestSpecBuilder;
+
 import io.cucumber.java.en.When;
+
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,6 +21,7 @@ import java.util.Arrays;
 
 import static hooks.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertTrue;
 
 public class API_Stepdefinitions {
 
@@ -29,7 +34,7 @@ public class API_Stepdefinitions {
 
     @Given("API kullanıcısı {string} yolu parametrelerini ayarlar")
     public void apı_kullanıcısı_yolu_parametrelerini_ayarlar(String rawPaths) {
-
+        spec = new RequestSpecBuilder().setBaseUri(ConfigurationReader.getProperty("baseUrl")).build();
         String[] paths = rawPaths.split("/");
 
         System.out.println(Arrays.toString(paths));
@@ -114,7 +119,7 @@ public class API_Stepdefinitions {
     @And("API Kullanıcısı, response body'deki remark bilgisinin {string} oldugu dogrulanmali")
     public void apıKullanıcısıResponseBodyDekiRemarkBilgisininOlduguDogrulanmali(String message) {
 
-        response.then().assertThat().body("remark",Matchers.equalTo(message));
+        response.then().assertThat().body("remark", Matchers.equalTo(message));
 
     }
 
@@ -147,7 +152,7 @@ public class API_Stepdefinitions {
             mesaj = e.getMessage();
         }
 
-        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
 
     }
 
@@ -156,8 +161,8 @@ public class API_Stepdefinitions {
     public void apiKullanicisiUserProfileEndpointineGondermekIcinDogruDatalarIcerenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","Ahmet Kaya");
-        requestBody.put("description","about about");
+        requestBody.put("name", "Ahmet Kaya");
+        requestBody.put("description", "about about");
     }
 
     @And("Api kullanicisi post request gonderir ve api categories add endpointinden donen responsei gecerli authorization bilgisi ile kaydeder")
@@ -179,15 +184,15 @@ public class API_Stepdefinitions {
     public void apiKullanicisiUserProfileEndpointineGondermekIcinEksikDatalarIcerenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","Ahmet Kaya");
+        requestBody.put("name", "Ahmet Kaya");
     }
 
     @Then("Api kullanicisi user profile endpointine gondermek icin data icermeyen bir post request hazirlar")
     public void apiKullanicisiUserProfileEndpointineGondermekIcinDataIcermeyenBirPostRequestHazirlar() {
 
         requestBody = new JSONObject();
-        requestBody.put("name","");
-        requestBody.put("description","");
+        requestBody.put("name", "");
+        requestBody.put("description", "");
     }
 
 
@@ -209,8 +214,9 @@ public class API_Stepdefinitions {
     @And("API Kullanıcısı, response body'deki error bilgisinin {string} oldugu dogrulanmali")
     public void apıKullanıcısıResponseBodyDekiErrorBilgisininOlduguDogrulanmali(String message) {
 
-        response.then().assertThat().body("message.error[0]",Matchers.equalTo(message));
+        response.then().assertThat().body("message.error[0]", Matchers.equalTo(message));
     }
+
 
     @Given("The API user sets {string} path parameters")
     public void theAPIUserSetsPathParameters(String rawPaths) {
@@ -240,6 +246,7 @@ public class API_Stepdefinitions {
 
     @Then("The API user saves the response from the admin loans running endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoansRunningEndpointWithValidAuthorizationInformation() {
+
         response = given()
                 .spec(spec)
                 .header("Accept", "application/json")
@@ -250,6 +257,7 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 
+
     @And("The API user verifies that the status code is {int}")
     public void theAPIUserVerifiesThatTheStatusCodeIs(int status) {
         response.then()
@@ -257,6 +265,7 @@ public class API_Stepdefinitions {
                 .statusCode(status);
 
     }
+
     @And("The API user verifies that the remark information in the response body is {string}")
     public void theAPIUserVerifiesThatTheRemarkInformationInTheResponseBodyIs(String remark) {
         response.then()
@@ -266,21 +275,27 @@ public class API_Stepdefinitions {
 
     @And("The API user records the response with invalid authorization information, verifies that the status code is '401' and confirms that the error information is Unauthorized")
     public void theAPIUserRecordsTheResponseWithInvalidAuthorizationInformationVerifiesThatTheStatusCodeIsAndConfirmsThatTheErrorInformationIsUnauthorized() {
+
         try {
             response = given()
                     .spec(spec)
                     .header("Accept", "application/json")
+
+                    .headers("Authorization", "Bearer " + Authentication.createToken("username"))
+
                     .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+
                     .when()
                     .get(fullPath);
         } catch (Exception e) {
             mesaj = e.getMessage();
         }
+
+        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
         System.out.println("mesaj: " + mesaj);
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
-
-
 
     }
 
@@ -297,10 +312,8 @@ public class API_Stepdefinitions {
     }
 
 
-
-
     @Then("The API user verifies that the content of the data field in the response body includes {int}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {int}, {string}, {string}, {int}, {string}, {string}, {string}, {string}")
-    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id,String loan_number, int user_id, int plan_id ,String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
+    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id, String loan_number, int user_id, int plan_id, String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
         jsonPath = response.jsonPath();
 
         Assert.assertEquals(id, jsonPath.getInt("data.id"));
@@ -328,10 +341,10 @@ public class API_Stepdefinitions {
     @And("The API user prepares a POST request containing the correct data to send to the admin loanplans add endpoint")
     public void theAPIUserPreparesAPOSTRequestContainingTheCorrectDataToSendToTheAdminLoanplansAddEndpoint() {
 
-        requestBody=new JSONObject();
+        requestBody = new JSONObject();
         requestBody.put("category_id", 1);
-        requestBody.put("name", "King Loan 12 ");
-        requestBody.put("title", "King Loan 12");
+        requestBody.put("name", "King Loan 15 ");
+        requestBody.put("title", "King Loan 15");
         requestBody.put("total_installment", 20);
         requestBody.put("installment_interval", 20);
         requestBody.put("per_installment", "4.00");
@@ -343,10 +356,11 @@ public class API_Stepdefinitions {
         requestBody.put("is_featured", 0);
         requestBody.put("application_fixed_charge", "20.00000000");
         requestBody.put("application_percent_charge", "3.00000000");
-        requestBody.put("instruction", "King Loan Plan 12");
+        requestBody.put("instruction", "King Loan Plan 15");
 
 
     }
+
     @Then("The API user saves the response from the admin loanplans add endpoint with valid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminLoanplansAddEndpointWithValidAuthorizationInformation() {
         response = given()
@@ -362,26 +376,24 @@ public class API_Stepdefinitions {
     }
 
 
-
-
     @And("The API user prepares a POST request with missing data to send to the admin loanplans add endpoint.")
     public void theAPIUserPreparesAPOSTRequestWithMissingDataToSendToTheAdminLoanplansAddEndpoint() {
-        requestBody=new JSONObject();
-        requestBody.put("per_installment","4.00");
-        requestBody.put("minimum_amount","2000.00000000");
-        requestBody.put("maximum_amount","5000.00000000");
-        requestBody.put("delay_value",25);
-        requestBody.put("fixed_charge","100.00000000");
-        requestBody.put("percent_charge","1.00000000");
-        requestBody.put("is_featured",0);
-        requestBody.put("application_fixed_charge","20.00000000");
-        requestBody.put("application_percent_charge","3.00000000");
-        requestBody.put("instruction","King Loan Plan 10");
+        requestBody = new JSONObject();
+        requestBody.put("per_installment", "4.00");
+        requestBody.put("minimum_amount", "2000.00000000");
+        requestBody.put("maximum_amount", "5000.00000000");
+        requestBody.put("delay_value", 25);
+        requestBody.put("fixed_charge", "100.00000000");
+        requestBody.put("percent_charge", "1.00000000");
+        requestBody.put("is_featured", 0);
+        requestBody.put("application_fixed_charge", "20.00000000");
+        requestBody.put("application_percent_charge", "3.00000000");
+        requestBody.put("instruction", "King Loan Plan 10");
     }
 
     @And("The API user prepares a POST request without data to send to the admin loanplans add endpoint")
     public void theAPIUserPreparesAPOSTRequestWithoutDataToSendToTheAdminLoanplansAddEndpoint() {
-        requestBody=new JSONObject();
+        requestBody = new JSONObject();
     }
 
 
@@ -391,7 +403,7 @@ public class API_Stepdefinitions {
                 .spec(spec)
                 .contentType(ContentType.JSON)
                 .header("Accept", "application/json")
-                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("invalidToken"))
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
                 .when()
                 .body(requestBody.toString())
                 .post(fullPath);
@@ -403,7 +415,7 @@ public class API_Stepdefinitions {
     public void theAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(String error) {
         response.then()
                 .assertThat()
-                .body("message.error[0]",Matchers.equalTo(error));
+                .body("message.error[0]", Matchers.equalTo(error));
     }
 
     @Then("The API user saves the response from the admin loanplans details id  endpoint with valid authorization information")
@@ -419,13 +431,11 @@ public class API_Stepdefinitions {
     }
 
 
-
-
     @Then("The API user verifies that the id information in the response body is {int}")
     public void the_api_user_verifies_that_the_id_information_in_the_response_body_is(int id) {
-        jsonPath=response.jsonPath();
+        jsonPath = response.jsonPath();
 
-        Assert.assertEquals(id,jsonPath.getInt("data[0].id"));
+        Assert.assertEquals(id, jsonPath.getInt("data[0].id"));
     }
 
     @Given("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir")
@@ -447,4 +457,218 @@ public class API_Stepdefinitions {
         response.then().assertThat().body("data[0].id", Matchers.equalTo(id));
     }
 
+
+    @And("The API user saves the response from the admin loans approve endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoansApproveEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("The API user verifies that the message information in the response body is {string}")
+    public void the_api_user_verifies_that_the_message_information_in_the_response_body_is(String message) {
+        response.then()
+                .assertThat()
+                .body("message", Matchers.equalTo(message));
+    }
+
+    @And("The API User verifies that the message information in the response body is {string}")
+    public void theAPIUserVerifiesThatTheMessageInformationInTheResponseBodyIs(String message) {
+        response.then()
+                .assertThat()
+                .body("data.message", Matchers.equalTo(message));
+    }
+
+
+    @When("The API user sends a POST request and saves the response from the admin loans approve endpoint with invalid authorization information verifies that the status code is '401' and confirms that the error information is Unauthorized")
+    public void theAPIUserSendsAPOSTRequestAndSavesTheResponseFromTheAdminLoansApproveEndpointWithInvalidAuthorizationInformation() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+
+
+    @And("It is verified that the created record has been deleted by sending a DELETE request to the api loanplans delete id endpoint with the Added plan id returned in the response body.")
+    public void ıtIsVerifiedThatTheCreatedRecordHasBeenDeletedBySendingADELETERequestToTheApiLoanplansDeleteIdEndpointWithTheAddedPlanIdReturnedInTheResponseBody() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data[\"Added plan id\"]");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+        jsonPath = response.jsonPath();
+        Integer deleteId = jsonPath.getInt("data[\"Deleted loan plan id\"]");
+        System.out.println("deleteId = " + deleteId);
+
+        Assert.assertEquals(id,deleteId);
+    }
+
+
+    @Then("A DELETE request that does not contain \\(id) is sent and the response is recorded.")
+    public void aDELETERequestThatDoesNotContainIdIsSentAndTheResponseIsRecorded() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("It must be verified that the message information in the response body is {string}")
+    public void ıtMustBeVerifiedThatTheMessageInformationInTheResponseBodyIs(String message) {
+
+        response.then().assertThat().body("data.message",Matchers.equalTo(message));
+    }
+
+
+    @Then("A DELETE request containing an unregistered \\(id) is sent and the response is recorded.")
+    public void aDELETERequestContainingAnUnregisteredIdIsSentAndTheResponseIsRecorded() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+
+
+
+    @Then("A DELETE body is sent with invalid authorization information and the response is recorded.Then  The API user verifies that the status code is {int} And The API user verifies that the error information in the response body is {string}")
+    public void aDELETEBodyIsSentWithInvalidAuthorizationInformationAndTheResponseIsRecordedThenTheAPIUserVerifiesThatTheStatusCodeIsAndTheAPIUserVerifiesThatTheErrorInformationInTheResponseBodyIs(int status, String message) {
+
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("admin"))
+                    .when()
+                    .delete(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
+    @Then("endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir ve kaydedilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirVeKaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+    //murat
+    @Given("API kullanicisi GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    //murat
+    @Given("API kullanicisi GET request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .get(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    //murat
+    @Given("API kullanıcısı donen PATCH response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanıcısı_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    //murat
+    @Then("API Kullanıcısı, response body'deki data.message bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanıcısı_response_body_deki_data_message_bilgisinin_oldugu_dogrulanmali(String message) {
+        jsonPath = response.jsonPath();
+        response.then().assertThat().body("data.message", Matchers.equalTo(message));
+    }
+
+    //murat
+    @Given("API kullanicisi PATCH request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_patch_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
 }
