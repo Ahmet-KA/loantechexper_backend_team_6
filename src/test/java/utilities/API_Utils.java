@@ -13,7 +13,9 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class API_Utils {
+
     public static RequestSpecification spec;
+
     public static String generateToken() {
 
         spec = new RequestSpecBuilder().setBaseUri(URI.create("https://xyz.com/api/login")).build();
@@ -49,7 +51,7 @@ public class API_Utils {
 
     }
 
-    public static Response deleteRequest(String token, String endpoint){
+    public static Response deleteRequest(String token, String endpoint) {
         Response response = given().headers(
                 "Authorization",
                 "Bearer " + token,
@@ -57,7 +59,7 @@ public class API_Utils {
                 ContentType.JSON,
                 "Accept",
                 ContentType.JSON).when().delete(endpoint);
-        return  response;
+        return response;
     }
 
 }
