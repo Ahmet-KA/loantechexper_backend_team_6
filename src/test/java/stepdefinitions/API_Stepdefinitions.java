@@ -27,8 +27,10 @@ public class API_Stepdefinitions {
 
     public static String fullPath;
     Response response;
+    Response response1;
     String mesaj;
     JsonPath jsonPath;
+    JsonPath jsonPath1;
     JSONObject requestBody;
 
 
@@ -530,6 +532,75 @@ public class API_Stepdefinitions {
     }
 
 
+
+
+    @And("It must be verified that the message information in the response body is {string}")
+    public void ıtMustBeVerifiedThatTheMessageInformationInTheResponseBodyIs(String message) {
+
+        response.then().assertThat().body("data.message",Matchers.equalTo(message));
+    }
+
+
+    @Then("endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir ve kaydedilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirVeKaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+
+    @Given("API kullanıcısı donen PATCH response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanıcısı_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    @Given("API kullanicisi PATCH request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_patch_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+
+
+    @Then("The API user saves the response from the admin deposit delete endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminDepositDeleteEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
     @Then("A DELETE request that does not contain \\(id) is sent and the response is recorded.")
     public void aDELETERequestThatDoesNotContainIdIsSentAndTheResponseIsRecorded() {
 
@@ -543,11 +614,7 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 
-    @And("It must be verified that the message information in the response body is {string}")
-    public void ıtMustBeVerifiedThatTheMessageInformationInTheResponseBodyIs(String message) {
 
-        response.then().assertThat().body("data.message",Matchers.equalTo(message));
-    }
 
 
     @Then("A DELETE request containing an unregistered \\(id) is sent and the response is recorded.")
@@ -584,8 +651,128 @@ public class API_Stepdefinitions {
 
     }
 
-    @Then("endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir ve kaydedilir")
-    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirVeKaydedilir() {
+
+
+    @Then("endpointe gecersiz authorization bilgileri ile bir GET request gönderilir ve kaydedilir durum kodunun {int} olduğunu doğrular. response bodydeki error bilgisinin {string} oldugu dogrulanmali")
+    public void endpointeGecersizAuthorizationBilgileriIleBirGETRequestGonderilirVeKaydedilirDurumKodununOldugunuDogrularResponseBodydekiErrorBilgisininOlduguDogrulanmali(int arg0, String arg1) {
+
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("admin"))
+                    .when()
+                    .get(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
+    @Then("Api kullanicisi user ticket add endpointine gondermek icin dogru datalar iceren bir post request hazirlar")
+    public void apiKullanicisiUserTicketAddEndpointineGondermekIcinDogruDatalarIcerenBirPostRequestHazirlar() {
+
+        requestBody = new JSONObject();
+        requestBody.put("subject","AhmetKaya");
+        requestBody.put("priority","high");
+        requestBody.put("message","KayaTicket");
+    }
+
+    @When("Api kullanicisi post request gonderir ve user ticket add endpointinden donen responsei gecerli authorization bilgisi ile kaydeder")
+    public void apiKullanicisiPostRequestGonderirVeUserTicketAddEndpointindenDonenResponseiGecerliAuthorizationBilgisiIleKaydeder() {
+
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("endpoint'e gecerli authorization bilgileri ile bir patch request gönderilir ve kaydedilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirPatchRequestGonderilirVeKaydedilir() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("\"Opened ticked id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .patch(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+    }
+
+    @And("Api kullanicisi yeni olusturulan kaydin bilgilerini kaydeder.")
+    public void apiKullanicisiYeniOlusturulanKaydinBilgileriniKaydeder() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("\"Opened ticked id\"");
+        System.out.println("id = " + id);
+
+        response1 = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath + "/" + id);
+
+        jsonPath1 = response1.jsonPath();
+        response1.prettyPrint();
+
+
+    }
+
+    @Then("Close olanın Response da dönen bilgilerini \\(user_id, name, email, ticket, subject, status, priority, last_reply, created_at, updated_at) dogrulayiniz")
+    public void closeOlanınResponseDaDonenBilgileriniUser_idNameEmailTicketSubjectStatusPriorityLast_replyCreated_atUpdated_atDogrulayiniz() {
+
+         /*
+        "status": 200,
+    "success": true,
+    "data": {
+        "id": 360,
+        "user_id": 10,
+        "name": "Ahmet Kaya",
+        "email": "ahmetkaya@gmail.com",
+        "ticket": "906670",
+        "subject": "Ahmet Ticket",
+        "status": 3,
+        "priority": 0,
+        "last_reply": "2023-12-31 09:05:50",
+        "created_at": "2023-12-31T14:05:50.000000Z",
+        "updated_at": "2023-12-31T14:07:57.000000Z"
+         */
+
+        String user_id1 = jsonPath1.getString("data.name");
+        System.out.println("user_id1 = " + user_id1);
+        String user_id = jsonPath.getString("data.name");
+        System.out.println("user_id = " + user_id);
+        Assert.assertEquals(jsonPath1.getInt("data.user_id"),jsonPath.getInt("data.user_id"));
+
+        Assert.assertEquals(jsonPath1.getString("data.name"),jsonPath.getString("data.name"));
+        Assert.assertEquals(jsonPath1.getString("data.email"),jsonPath.getString("data.email"));
+        Assert.assertEquals(jsonPath1.getString("data.ticket"),jsonPath.getString("data.ticket"));
+        Assert.assertEquals(jsonPath1.getString("data.subject"),jsonPath.getString("data.subject"));
+        Assert.assertNotEquals(jsonPath1.getInt("status"),jsonPath.getInt("status"));
+        Assert.assertEquals(jsonPath1.getString("data.priority"),jsonPath.getString("data.priority"));
+        Assert.assertEquals(jsonPath1.getString("data.last_reply"),jsonPath.getString("data.last_reply"));
+        Assert.assertEquals(jsonPath1.getString("data.created_at"),jsonPath.getString("data.created_at"));
+        Assert.assertNotEquals(jsonPath1.getString("data.updated_at"),jsonPath.getString("data.updated_at"));
+
+    }
+
+    @Then("endpoint e gecerli authorization bilgileri ile bir GET request gönderilir kaydedilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirKaydedilir() {
 
         response = given()
                 .spec(spec)
@@ -596,6 +783,26 @@ public class API_Stepdefinitions {
 
         response.prettyPrint();
     }
+
+
+    @And("endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir  kayıt edilir")
+    public void endpointEGecerliAuthorizationBilgileriIleBirGETRequestGonderilirKayıtEdilir() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("\"Closed ticket id\"");
+        System.out.println("Closed ticket id = " + id);
+
+
+        response = given()
+                .spec(spec)
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + id);
+
+        jsonPath = response.jsonPath();
+        response.prettyPrint();
+    }
+
 
     //murat
     @Given("API kullanicisi GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
@@ -632,18 +839,7 @@ public class API_Stepdefinitions {
     }
 
     //murat
-    @Given("API kullanıcısı donen PATCH response'u gecerli authorization bilgisi ile kaydeder")
-    public void apı_kullanıcısı_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
-        response = given()
-                .spec(spec)
-                .header("Accept", "application/json")
-                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
-                .when()
-                .patch(fullPath);
 
-        response.prettyPrint();
-
-    }
 
     //murat
     @Then("API Kullanıcısı, response body'deki data.message bilgisinin {string} oldugu dogrulanmali")
@@ -653,24 +849,7 @@ public class API_Stepdefinitions {
     }
 
     //murat
-    @Given("API kullanicisi PATCH request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
-    public void apı_kullanicisi_patch_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
-        try {
-            response = given()
-                    .spec(spec)
-                    .header("Accept", "application/json")
-                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
-                    .when()
-                    .patch(fullPath);
 
-            response.prettyPrint();
-        } catch (Exception e) {
-            mesaj = e.getMessage();
-        }
-        System.out.println("mesaj: " + mesaj);
-
-        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
-    }
     @Then("Endpoint'e gecerli authorization bilgileri ile bir GET requestt gonderilir ve kaydedilir")
     public void endpointEGecerliAuthorizationBilgileriIleBirGETRequesttGonderilirVeKaydedilir() {
 
@@ -686,17 +865,7 @@ public class API_Stepdefinitions {
     }
 
 
-    @Then("The API user saves the response from the admin deposit delete endpoint with valid authorization information")
-    public void theAPIUserSavesTheResponseFromTheAdminDepositDeleteEndpointWithValidAuthorizationInformation() {
-        response = given()
-                .spec(spec)
-                .header("Accept", "application/json")
-                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
-                .when()
-                .delete(fullPath);
 
-        response.prettyPrint();
-    }
 
     @Then("The API user saves the response from the admin deposit delete endpoint with invalid authorization information")
     public void theAPIUserSavesTheResponseFromTheAdminDepositDeleteEndpointWithInvalidAuthorizationInformation() {
@@ -751,3 +920,4 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 }
+
