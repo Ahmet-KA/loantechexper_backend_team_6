@@ -27,7 +27,7 @@
       Then  API kullanıcısı "user/ticket/close" yolu parametrelerini ayarlar
       Then  endpoint'e gecerli authorization bilgileri ile bir patch request gönderilir ve kaydedilir
       Given API kullanıcısı "api/tickets/details" yolu parametrelerini ayarlar
-      And   endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir ve kaydedilir
+      And   endpoint'e gecerli authorization bilgileri ile bir GET request gönderilir  kayıt edilir
       Then  Close olanın Response da dönen bilgilerini (user_id, name, email, ticket, subject, status, priority, last_reply, created_at, updated_at) dogrulayiniz
 
 
