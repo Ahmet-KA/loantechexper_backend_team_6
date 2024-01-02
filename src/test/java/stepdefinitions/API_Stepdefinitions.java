@@ -282,18 +282,12 @@ public class API_Stepdefinitions {
             response = given()
                     .spec(spec)
                     .header("Accept", "application/json")
-
-                    .headers("Authorization", "Bearer " + Authentication.createToken("username"))
-
                     .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
-
                     .when()
                     .get(fullPath);
         } catch (Exception e) {
             mesaj = e.getMessage();
         }
-
-        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
 
         System.out.println("mesaj: " + mesaj);
 
@@ -883,29 +877,25 @@ public class API_Stepdefinitions {
 
 
 
-    @When("The API user sends a delete request and saves the response from the admin loans approve endpoint with invalid authorization information verifies that the status code is '401' and confirms that the error information is Unauthorized")
+    @When("The API user sends a delete request and saves the response from the admin deposit delete endpoint with invalid authorization information verifies that the status code is '401' and confirms that the error information is Unauthorized")
     public void theAPIUserSendsADeleteRequestAndSavesTheResponseFromTheAdminLoansApproveEndpointWithInvalidAuthorizationInformationVerifiesThatTheStatusCodeIsAndConfirmsThatTheErrorInformationIsUnauthorized() {
         try {
             response = given()
                     .spec(spec)
                     .header("Accept", "application/json")
-
-                    .headers("Authorization", "Bearer " + Authentication.createToken("username"))
-
                     .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
-
                     .when()
                     .delete(fullPath);
         } catch (Exception e) {
             mesaj = e.getMessage();
         }
 
-        assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
-
         System.out.println("mesaj: " + mesaj);
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
     }
+
 
 
     @Then("The API user saves the get response from the admin deposit details endpoint with valid authorization information")
