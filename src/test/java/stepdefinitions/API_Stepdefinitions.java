@@ -909,5 +909,286 @@ public class API_Stepdefinitions {
 
         response.prettyPrint();
     }
+
+    @Then("The API user saves the response from the admin loanplans list endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminLoanplansListEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+
+    @Then("Verify the information of the one with the id {int} in the API user response body: {int}, {int},{string}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}, {int}, {string}, {string}, {int}, {int}, {string}, {string}")
+    public void verify_the_information_of_the_one_with_the_id_in_the_apı_user_response_body(int dataIndex, int categoryId, int formId, String name, String title, String minimum_amount, String maximum_amount, String per_installment, int installment_interval, int total_installment, String application_fixed_charge, String application_percent_charge, String instruction, int delay_value, String fixed_charge, String percent_charge, int is_featured, int status, String created_at, String updated_at) {
+
+        jsonPath = response.jsonPath();
+
+        Assert.assertEquals(categoryId, jsonPath.getInt("data[" + dataIndex + "].category_id"));
+        Assert.assertEquals(formId, jsonPath.getInt("data[" + dataIndex + "].form_id"));
+        Assert.assertEquals(name, jsonPath.getString("data[" + dataIndex + "].name"));
+        Assert.assertEquals(title, jsonPath.getString("data[" + dataIndex + "].title"));
+        Assert.assertEquals(minimum_amount, jsonPath.getString("data[" + dataIndex + "].minimum_amount"));
+        Assert.assertEquals(maximum_amount, jsonPath.getString("data[" + dataIndex + "].maximum_amount"));
+        Assert.assertEquals(per_installment, jsonPath.getString("data[" + dataIndex + "].per_installment"));
+        Assert.assertEquals(installment_interval, jsonPath.getInt("data[" + dataIndex + "].installment_interval"));
+        Assert.assertEquals(total_installment, jsonPath.getInt("data[" + dataIndex + "].total_installment"));
+        Assert.assertEquals(application_fixed_charge, jsonPath.getString("data[" + dataIndex + "].application_fixed_charge"));
+        Assert.assertEquals(application_percent_charge, jsonPath.getString("data[" + dataIndex + "].application_percent_charge"));
+        Assert.assertEquals(instruction, jsonPath.getString("data[" + dataIndex + "].instruction"));
+        Assert.assertEquals(delay_value, jsonPath.getInt("data[" + dataIndex + "].delay_value"));
+        Assert.assertEquals(fixed_charge, jsonPath.getString("data[" + dataIndex + "].fixed_charge"));
+        Assert.assertEquals(percent_charge, jsonPath.getString("data[" + dataIndex + "].percent_charge"));
+        Assert.assertEquals(is_featured, jsonPath.getInt("data[" + dataIndex + "].is_featured"));
+        Assert.assertEquals(status, jsonPath.getInt("data[" + dataIndex + "].status"));
+        Assert.assertEquals(created_at, jsonPath.getString("data[" + dataIndex + "].created_at"));
+        Assert.assertEquals(updated_at, jsonPath.getString("data[" + dataIndex + "].updated_at"));
+    }
+
+    @Then("The API user prepares a POST request containing the correct data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_containing_the_correct_data_to_send_to_the_user_ticket_add_endpoint() {
+   /*
+    {
+    "subject":"Blue Test Ticket",
+    "priority":"priority",
+    "message":"Blue Test Ticket Message-"
+   }
+   */   //id 184
+
+        requestBody = new JSONObject();
+        requestBody.put("subject", "Blue Test Ticket");
+        requestBody.put("priority", "priority");
+        requestBody.put("message", "Blue Test Ticket Message-");
+
+    }
+
+    @Then("The API user sends a POST request and saves the response from the user ticket add endpoint with valid authorization information")
+    public void the_apı_user_sends_a_post_request_and_saves_the_response_from_the_user_ticket_add_endpoint_with_valid_authorization_information() {
+        response= given()
+                .spec(spec).contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+    @Given("The API user prepares a POST request containing no data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_containing_no_data_to_send_to_the_user_ticket_add_endpoint() {
+        requestBody=new JSONObject();
+    }
+
+    @Given("The API user prepares a POST request with incomplete missing data to send to the user ticket add endpoint")
+    public void the_apı_user_prepares_a_post_request_with_incomplete_missing_data_to_send_to_the_user_ticket_add_endpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("subject", "Blue Test Ticket");
+    }
+
+    @Given("The API user sends a POST request and saves the response from the user ticket add endpoint with invalid authorization information")
+    public void the_apı_user_sends_a_post_request_and_saves_the_response_from_the_user_ticket_add_endpoint_with_invalid_authorization_information() {
+        response= given()
+                .spec(spec).contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization","Bearer "+ ConfigurationReader.getProperty("invalidToken"))
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Given("The API user verifies that the error message in the response body is {string}")
+    public void the_apı_user_verifies_that_the_error_message_in_the_response_body_is(String errorMessage) {
+        response.then().assertThat().body("message.error[0]",Matchers.equalTo(errorMessage));
+
+    }
+
+    @Given("The API user saves the response from the user ticket detail endpoint with valid authorization information")
+    public void the_apı_user_saves_the_response_from_the_user_ticket_detail_endpoint_with_valid_authorization_information() {
+        response=given().spec(spec).header("Accept", "application/json")
+                .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+
+    @Given("The API user verifies that the success value in the response body is true")
+    public void the_apı_user_verifies_that_the_success_value_in_the_response_body_is_true() {
+        response.then().assertThat().body("success",Matchers.equalTo(true));
+    }
+
+    @And("The API user verifies that the id value in the response body is {int}")
+    public void theAPIUserVerifiesThatTheIdValueInTheResponseBodyIsDataId(int dataId) {
+        jsonPath=response.jsonPath();
+        Assert.assertEquals(dataId,jsonPath.getInt("data.id"));
+    }
+    @Then("The API user sends a DELETE request to delete the created ticket and saves the response from the user ticket delete endpoint with valid authorization information")
+    public void The_apı_user_sends_a_delete_request_to_delete_the_created_ticket_and_saves_the_response_from_the_user_ticket_delete_endpoint_with_valid_authorization_information() {
+        jsonPath=response.jsonPath();
+        String id =jsonPath.getString("\"Opened ticked id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .delete(fullPath + "/" + id);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user verifies that the data message information in the response body is {string}")
+    public void theAPIUserVerifiesThatTheDataMessageInformationInTheResponseBodyIs(String message) {
+
+        response.then().assertThat().body("data.message",Matchers.equalTo(message));
+    }
+    @Given("The API User saves the response from the user ticket detail id endpoint with valid authorization information")
+    public void the_apı_user_saves_the_response_from_the_user_ticket_detail_id_endpoint_with_valid_authorization_information() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+
+    @And("The API user send a PATCH request and saves the response from the user ticket close endpoint with invalid authorization information and verifies that the status code is {int} and the error message is {string}")
+    public void theAPIUserSendAPATCHRequestAndSavesTheResponseFromTheUserTicketCloseEndpointWithInvalidAuthorizationInformationAndVerifiesThatTheStatusCodeIsAndTheErrorMessageIs(int code, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .contentType(ContentType.JSON)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("invalid"))
+                    .when()
+                    .patch(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+            System.out.println(mesaj);
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
+    @And("The API user sends Get request and saves response from the user ticket detail id endpoint with valid authorization information")
+    public void theAPIUserSendsGetRequestAndSavesResponseFromTheUserTicketDetailIdEndpointWithValidAuthorizationInformation() {
+
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+
+    }
+    @And("The API user Verifies that the status information in the response body is {int}")
+    public void theAPIUserVerifiesThatTheStatusInformationInTheResponseBodyIsStatus(int status) {
+        jsonPath=response.jsonPath();
+        Assert.assertEquals(status,jsonPath.getInt("data.status"));
+
+    }
+
+    @And("The API user send a PATCH request with added ticket id and saves the response from the user ticket close endpoint with valid authorization information")
+    public void theAPIUserSendAPATCHRequestWithAddedTicketIdAndSavesTheResponseFromTheUserTicketCloseEndpointWithValidAuthorizationInformation() {
+        jsonPath=response.jsonPath();
+        String id =jsonPath.getString("\"Opened ticked id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .patch(fullPath + "/" + id);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user sends Get request with closed ticket id and saves response from the user ticket detail id endpoint with valid authorization information")
+    public void theAPIUserSendsGetRequestWithClosedTicketIdAndSavesResponseFromTheUserTicketDetailIdEndpointWithValidAuthorizationInformation() {
+        jsonPath=response.jsonPath();
+        String id =jsonPath.getString("\"Closed ticket id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath + "/" + id);
+
+        response.prettyPrint();
+    }
+
+
+    @And("The API user sends a DELETE request and saves the response from the user ticket delete endpoint with valid authorization information")
+    public void theAPIUserSendsADELETERequestAndSavesTheResponseFromTheUserTicketDeleteEndpointWithValidAuthorizationInformation() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user send a DELETE request and saves the response from the user ticket close endpoint with invalid authorization information and verifies that the status code is {int} and the error message is {string}")
+    public void theAPIUserSendADELETERequestAndSavesTheResponseFromTheUserTicketCloseEndpointWithInvalidAuthorizationInformationAndVerifiesThatTheStatusCodeIsAndTheErrorMessageIs(int code, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .contentType(ContentType.JSON)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("invalid"))
+                    .when()
+                    .delete(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+            System.out.println(mesaj);
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    @And("The API user sends a GET request with deleted ticket id and saves the response from the user ticket detail endpoint with valid authorization information")
+    public void theAPIUserSendsAGETRequestWithDeletedTicketIdAndSavesTheResponseFromTheUserTicketDetailEndpointWithValidAuthorizationInformation() {
+        jsonPath=response.jsonPath();
+        String id =jsonPath.getString("data.\"Deleted ticket id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + id);
+
+        response.prettyPrint();
+    }
+
+    @Given("The API user send a PATCH request and saves the response from the user ticket close endpoint with valid authorization information")
+    public void the_apı_user_send_a_patch_request_and_saves_the_response_from_the_user_ticket_close_endpoint_with_valid_authorization_information() {
+        response=given().spec(spec).header("Accept", "application/json")
+                .headers("Authorization","Bearer "+Authentication.createToken("usertoken"))
+                .when()
+                .patch(fullPath);
+        response.prettyPrint();
+    }
+
+
+
+
+
 }
 
