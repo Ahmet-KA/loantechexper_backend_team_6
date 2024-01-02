@@ -1186,6 +1186,326 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 
+    @Given("Api kullanicisi api withdraw methods add endpointine gondermek icin dogru datalar iceren bir patch request hazirlar")
+    public void api_kullanicisi_api_withdraw_methods_add_endpointine_gondermek_icin_dogru_datalar_iceren_bir_patch_request_hazirlar() {
+
+        //curl --location -g '{{base_url}}api/withdraw/methods/add' \
+        //--data '{
+        //        "name": "Method 5",
+        //        "min_limit": "200.00000000",
+        //        "max_limit": "7000.00000000",
+        //        "fixed_charge": "150.00000000",
+        //        "rate": "2.00000000",
+        //        "percent_charge": "3.00",
+        //        "currency": "USD",
+        //        "description": "Test Method 5"
+        //}'
+        requestBody = new JSONObject();
+        requestBody.put("name", "Ali");
+        requestBody.put("min_limit", "50000");
+        requestBody.put("max_limit", "8000000");
+        requestBody.put("fixed_charge", "150.00000000");
+        requestBody.put("rate", "2.00000000");
+        requestBody.put("percent_charge", "3.01");
+        requestBody.put("currency", "USD");
+        requestBody.put("description", "Test Ali");
+
+    }
+
+    @Given("API kullanıcısı, api withdraw methods add endpointden gelen yanıtı geçerli yetkilendirme bilgileriyle kaydeder")
+    public void apı_kullanıcısı_api_withdraw_methods_add_endpointden_gelen_yanıtı_geçerli_yetkilendirme_bilgileriyle_kaydeder() {
+
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve dogru \\(id) iceren bir PATCH body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_dogru_id_iceren_bir_patch_body_gönderilir_ve_kaydedilir() {
+
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data.Method.id");
+        System.out.println("id = " + id);
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath + "/" + id);
+        response.prettyPrint();
+
+    }
+
+    @Given("API Kullanıcısı, body deki mesaj bilgisinin {string} oldugunu dogrular")
+    public void apı_kullanıcısı_body_deki_mesaj_bilgisinin_oldugunu_dogrular(String message) {
+
+        response.then()
+                .assertThat()
+                .body("data.message", Matchers.equalTo(message));
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve dogru \\(id) icermeyen bir PATCH body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_dogru_id_icermeyen_bir_patch_body_gönderilir_ve_kaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+        response.prettyPrint();
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve kaydi olmayan \\(id) icermeyen bir PATCH body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_kaydi_olmayan_id_icermeyen_bir_patch_body_gönderilir_ve_kaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .patch(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+
+    @Given("endpoint'ine gecersiz authorization bilgileri ve dogru \\(id) iceren bir PATCH body gönderilir ve kaydedilir API kullanıcısı durum kodunun {int} olduğunu doğrular. API Kullanıcısı, response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void endpoint_ine_gecersiz_authorization_bilgileri_ve_dogru_id_iceren_bir_patch_body_gönderilir_ve_kaydedilir_apı_kullanıcısı_durum_kodunun_olduğunu_doğrular_apı_kullanıcısı_response_body_deki_error_bilgisinin_oldugu_dogrulanmali(Integer int1, String string) {
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data.Method.id");
+        System.out.println("id = " + id);
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("baseUrl"))
+                    .when()
+                    .patch(fullPath + "/" + id);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
+
+    @Given("API kullanicisi guncellenen id icin GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanicisi_guncellenen_id_icin_get_request_gonderir_ve_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        jsonPath = response.jsonPath();
+        Integer id = jsonPath.getInt("data[\"Method id\"]");
+        System.out.println("id = " + id);
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + id);
+        response.prettyPrint();
+        response.then().assertThat().body("data.id", Matchers.equalTo(id));
+
+    }
+
+    @Given("Api kullanicisi api blog add endpointine gondermek icin dogru datalar iceren bir post request hazirlar")
+    public void api_kullanicisi_api_subscriber_add_endpointine_gondermek_icin_dogru_datalar_iceren_bir_patch_request_hazirlar() {
+        requestBody = new JSONObject();
+        requestBody.put("title", "Test Blog 3");
+        requestBody.put("description", "Test Blog S");
+    }
+
+    @Given("API kullanıcısı, api blog methods add endpointden gelen yanıtı geçerli yetkilendirme bilgileriyle kaydeder")
+    public void apı_kullanıcısı_api_subscriber_methods_add_endpointden_gelen_yanıtı_geçerli_yetkilendirme_bilgileriyle_kaydeder() {
+        response = given()
+                .spec(spec).contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve dogru \\(id) iceren bir DELETE body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_dogru_id_iceren_bir_delete_body_gönderilir_ve_kaydedilir() {
+        jsonPath = response.jsonPath();
+        String id = jsonPath.getString("data.\"Added blog id\"");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ile bir DELETE body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ile_bir_delete_body_gönderilir_ve_kaydedilir() {
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    @Given("endpoint'ine gecersiz authorization bilgileri ve dogru id iceren bir DELETE body gönderilir ve kaydedilir API kullanıcısı durum kodunun {int} olduğunu doğrular. API Kullanıcısı, response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void endpoint_ine_gecersiz_authorization_bilgileri_ve_dogru_id_iceren_bir_delete_body_gönderilir_ve_kaydedilir_apı_kullanıcısı_durum_kodunun_olduğunu_doğrular_apı_kullanıcısı_response_body_deki_error_bilgisinin_oldugu_dogrulanmali(Integer int1, String string) {
+
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("admin"))
+                    .when()
+                    .delete(fullPath);
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve dogru \\(id) iceren bir DELETE body gönderilir ve kaydin silindigi dogrulanir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_dogru_id_iceren_bir_delete_body_gönderilir_ve_kaydin_silindigi_dogrulanir() {
+        jsonPath = response.jsonPath();
+        String id = jsonPath.getString("data[\"Added plan id\"]");
+        System.out.println("id = " + id);
+
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath + "/" + id);
+
+        response.prettyPrint();
+
+        jsonPath = response.jsonPath();
+        String deleteId = jsonPath.getString("data[\"Removed  blog id\"]");
+        System.out.println("deleteId = " + deleteId);
+
+        Assert.assertEquals(id, deleteId);
+    }
+
+
+    @Given("API kullanicisi api loans reject id endpointine gondermek icin dogru datalar iceren bir POST request hazirlar")
+    public void apı_kullanicisi_api_loans_reject_id_endpointine_gondermek_icin_dogru_datalar_iceren_bir_post_request_hazirlar() {
+        requestBody = new JSONObject();
+        requestBody.put("reason", "Bank info is wrong.");
+    }
+
+    @Given("endpoint'ine gecerli authorization bilgileri ve dogru \\(id) iceren bir POST body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecerli_authorization_bilgileri_ve_dogru_id_iceren_bir_post_body_gönderilir_ve_kaydedilir() {
+        response = given()
+                .spec(spec).contentType(ContentType.JSON
+                )
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Given("API Kullanıcısı, body deki reason bilgisinin {string} oldugunu dogrular")
+    public void apı_kullanıcısı_body_deki_reason_bilgisinin_oldugunu_dogrular(String Reason) {
+        response.then()
+                .assertThat()
+                .body("data.Reason", Matchers.equalTo(Reason));
+
+
+    }
+
+    @Given("API kullanicisi api loans reject id endpointine gondermek icin dogru datalar icermeyen bir POST request hazirlar")
+    public void apı_kullanicisi_api_loans_reject_id_endpointine_gondermek_icin_dogru_datalar_icermeyen_bir_post_request_hazirlar() {
+        requestBody = new JSONObject();
+        requestBody.put("reason", "");
+    }
+
+
+    @Given("endpoint'ine gecersiz authorization bilgileri ve dogru \\(id) iceren bir POST body gönderilir ve kaydedilir")
+    public void endpoint_ine_gecersiz_authorization_bilgileri_ve_dogru_id_iceren_bir_post_body_gönderilir_ve_kaydedilir() {
+
+
+        response = given()
+                .spec(spec).contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("baseUrl"))
+                .when().body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    @Given("API Kullanıcısı, body deki error bilgisinin {string} oldugunu dogrular")
+    public void apı_kullanıcısı_body_deki_error_bilgisinin_oldugunu_dogrular(String string) {
+        response.then()
+                .assertThat()
+                .body("message.error[0]", Matchers.equalTo(string));
+
+    }
+
+
+
+    //
+
+    @Given("The API admin verifies that the content of the data field in the response body includes {int}, {int}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}")
+    public void the_apı_admin_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int user_id, int method_code, String amount, String method_currency, String charge, String rate, String final_amo, String btc_amo, String btc_wallet, String trx, String payment_try, int status, int from_api, String admin_feedback, String created_at, String updated_at) {
+        jsonPath = response.jsonPath();
+        Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
+        Assert.assertEquals(method_code, jsonPath.getInt("data.method_code"));
+        Assert.assertEquals(amount, jsonPath.getString("data.amount"));
+        Assert.assertEquals(method_currency, jsonPath.getString("data.method_currency"));
+        Assert.assertEquals(charge, jsonPath.getString("data.charge"));
+        Assert.assertEquals(rate, jsonPath.getString("data.rate"));
+        Assert.assertEquals(final_amo, jsonPath.getString("data.final_amo"));
+        Assert.assertEquals(btc_amo, jsonPath.getString("data.btc_amo"));
+        Assert.assertEquals(btc_wallet, jsonPath.getString("data.btc_wallet"));
+        Assert.assertEquals(trx, jsonPath.getString("data.trx"));
+        Assert.assertEquals(payment_try, jsonPath.getString("data.payment_try"));
+        Assert.assertEquals(status, jsonPath.getInt("data.status"));
+        Assert.assertEquals(from_api, jsonPath.getInt("data.from_api"));
+        Assert.assertNull(admin_feedback, jsonPath.getString("data.admin_feedback"));
+        Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
+        Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
+    }
+
+    @Given("API Kullanıcısı, body deki reason bilgisinin <null> oldugunu dogrular")
+    public void apı_kullanıcısı_body_deki_reason_bilgisinin_null_oldugunu_dogrular() {
+        response.then()
+                .assertThat()
+                .body("data.Reason", Matchers.equalTo(null));
+
+
+    }
+
+
+
+
+
 
 
 
