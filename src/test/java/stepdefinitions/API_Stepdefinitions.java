@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import static hooks.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class API_Stepdefinitions {
@@ -505,7 +506,6 @@ public class API_Stepdefinitions {
     }
 
 
-
     @And("It is verified that the created record has been deleted by sending a DELETE request to the api loanplans delete id endpoint with the Added plan id returned in the response body.")
     public void ıtIsVerifiedThatTheCreatedRecordHasBeenDeletedBySendingADELETERequestToTheApiLoanplansDeleteIdEndpointWithTheAddedPlanIdReturnedInTheResponseBody() {
 
@@ -526,7 +526,7 @@ public class API_Stepdefinitions {
         Integer deleteId = jsonPath.getInt("data[\"Deleted loan plan id\"]");
         System.out.println("deleteId = " + deleteId);
 
-        Assert.assertEquals(id,deleteId);
+        Assert.assertEquals(id, deleteId);
     }
 
 
@@ -546,7 +546,7 @@ public class API_Stepdefinitions {
     @And("It must be verified that the message information in the response body is {string}")
     public void ıtMustBeVerifiedThatTheMessageInformationInTheResponseBodyIs(String message) {
 
-        response.then().assertThat().body("data.message",Matchers.equalTo(message));
+        response.then().assertThat().body("data.message", Matchers.equalTo(message));
     }
 
 
@@ -562,8 +562,6 @@ public class API_Stepdefinitions {
 
         response.prettyPrint();
     }
-
-
 
 
     @Then("A DELETE body is sent with invalid authorization information and the response is recorded.Then  The API user verifies that the status code is {int} And The API user verifies that the error information in the response body is {string}")
@@ -597,7 +595,7 @@ public class API_Stepdefinitions {
         response.prettyPrint();
     }
 
-    //murat
+    //Murat
     @Given("API kullanicisi GET request gonderir ve donen response'u gecerli authorization bilgisi ile kaydeder")
     public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
         response = given()
@@ -611,7 +609,7 @@ public class API_Stepdefinitions {
 
     }
 
-    //murat
+    //Murat
     @Given("API kullanicisi GET request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
     public void apı_kullanicisi_get_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
         try {
@@ -631,7 +629,7 @@ public class API_Stepdefinitions {
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
     }
 
-    //murat
+    //Murat
     @Given("API kullanıcısı donen PATCH response'u gecerli authorization bilgisi ile kaydeder")
     public void apı_kullanıcısı_donen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
         response = given()
@@ -645,14 +643,14 @@ public class API_Stepdefinitions {
 
     }
 
-    //murat
+    //Murat
     @Then("API Kullanıcısı, response body'deki data.message bilgisinin {string} oldugu dogrulanmali")
     public void apı_kullanıcısı_response_body_deki_data_message_bilgisinin_oldugu_dogrulanmali(String message) {
         jsonPath = response.jsonPath();
         response.then().assertThat().body("data.message", Matchers.equalTo(message));
     }
 
-    //murat
+    //Murat
     @Given("API kullanicisi PATCH request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
     public void apı_kullanicisi_patch_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
         try {
@@ -671,4 +669,7 @@ public class API_Stepdefinitions {
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
     }
+
+
 }
+
