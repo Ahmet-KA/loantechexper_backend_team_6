@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import static hooks.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class API_Stepdefinitions {
@@ -312,25 +313,25 @@ public class API_Stepdefinitions {
     public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id, String loan_number, int user_id, int plan_id, String amount, String per_installment, int installment_interval, int delay_value, String charge_per_installment, String delay_charge, int given_installment, int total_installment, String application_form, String admin_feedback, int status, String due_notification_sent, String approved_at, String created_at, String updated_at) {
         jsonPath = response.jsonPath();
 
-        Assert.assertEquals(id, jsonPath.getInt("data.id"));
-        Assert.assertEquals(loan_number, jsonPath.getString("data.loan_number"));
-        Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
-        Assert.assertEquals(plan_id, jsonPath.getInt("data.plan_id"));
-        Assert.assertEquals(amount, jsonPath.getString("data.amount"));
-        Assert.assertEquals(per_installment, jsonPath.getString("data.per_installment"));
-        Assert.assertEquals(installment_interval, jsonPath.getInt("data.installment_interval"));
-        Assert.assertEquals(delay_value, jsonPath.getInt("data.delay_value"));
-        Assert.assertEquals(charge_per_installment, jsonPath.getString("data.charge_per_installment"));
-        Assert.assertEquals(delay_charge, jsonPath.getString("data.delay_charge"));
-        Assert.assertEquals(given_installment, jsonPath.getInt("data.given_installment"));
-        Assert.assertEquals(total_installment, jsonPath.getInt("data.total_installment"));
-        Assert.assertEquals(application_form, jsonPath.getString("data.application_form"));
+        assertEquals(id, jsonPath.getInt("data.id"));
+        assertEquals(loan_number, jsonPath.getString("data.loan_number"));
+        assertEquals(user_id, jsonPath.getInt("data.user_id"));
+        assertEquals(plan_id, jsonPath.getInt("data.plan_id"));
+        assertEquals(amount, jsonPath.getString("data.amount"));
+        assertEquals(per_installment, jsonPath.getString("data.per_installment"));
+        assertEquals(installment_interval, jsonPath.getInt("data.installment_interval"));
+        assertEquals(delay_value, jsonPath.getInt("data.delay_value"));
+        assertEquals(charge_per_installment, jsonPath.getString("data.charge_per_installment"));
+        assertEquals(delay_charge, jsonPath.getString("data.delay_charge"));
+        assertEquals(given_installment, jsonPath.getInt("data.given_installment"));
+        assertEquals(total_installment, jsonPath.getInt("data.total_installment"));
+        assertEquals(application_form, jsonPath.getString("data.application_form"));
         Assert.assertNull(admin_feedback, jsonPath.getString("data.admin_feedback"));
-        Assert.assertEquals(status, jsonPath.getInt("data.status"));
+        assertEquals(status, jsonPath.getInt("data.status"));
         Assert.assertNull(due_notification_sent, jsonPath.getString("data.due_notification_sent"));
-        Assert.assertEquals(approved_at, jsonPath.getString("data.approved_at"));
-        Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
-        Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
+        assertEquals(approved_at, jsonPath.getString("data.approved_at"));
+        assertEquals(created_at, jsonPath.getString("data.created_at"));
+        assertEquals(updated_at, jsonPath.getString("data.updated_at"));
 
 
 
@@ -434,7 +435,7 @@ public class API_Stepdefinitions {
     public void the_api_user_verifies_that_the_id_information_in_the_response_body_is(int id) {
         jsonPath = response.jsonPath();
 
-        Assert.assertEquals(id, jsonPath.getInt("data[0].id"));
+        assertEquals(id, jsonPath.getInt("data[0].id"));
     }
 
     @Given("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir")
@@ -525,7 +526,7 @@ public class API_Stepdefinitions {
         Integer deleteId = jsonPath.getInt("data[\"Deleted loan plan id\"]");
         System.out.println("deleteId = " + deleteId);
 
-        Assert.assertEquals(id,deleteId);
+        assertEquals(id,deleteId);
     }
 
 
@@ -754,16 +755,16 @@ public class API_Stepdefinitions {
         System.out.println("user_id1 = " + user_id1);
         String user_id = jsonPath.getString("data.name");
         System.out.println("user_id = " + user_id);
-        Assert.assertEquals(jsonPath1.getInt("data.user_id"),jsonPath.getInt("data.user_id"));
+        assertEquals(jsonPath1.getInt("data.user_id"),jsonPath.getInt("data.user_id"));
 
-        Assert.assertEquals(jsonPath1.getString("data.name"),jsonPath.getString("data.name"));
-        Assert.assertEquals(jsonPath1.getString("data.email"),jsonPath.getString("data.email"));
-        Assert.assertEquals(jsonPath1.getString("data.ticket"),jsonPath.getString("data.ticket"));
-        Assert.assertEquals(jsonPath1.getString("data.subject"),jsonPath.getString("data.subject"));
+        assertEquals(jsonPath1.getString("data.name"),jsonPath.getString("data.name"));
+        assertEquals(jsonPath1.getString("data.email"),jsonPath.getString("data.email"));
+        assertEquals(jsonPath1.getString("data.ticket"),jsonPath.getString("data.ticket"));
+        assertEquals(jsonPath1.getString("data.subject"),jsonPath.getString("data.subject"));
         Assert.assertNotEquals(jsonPath1.getInt("status"),jsonPath.getInt("status"));
-        Assert.assertEquals(jsonPath1.getString("data.priority"),jsonPath.getString("data.priority"));
-        Assert.assertEquals(jsonPath1.getString("data.last_reply"),jsonPath.getString("data.last_reply"));
-        Assert.assertEquals(jsonPath1.getString("data.created_at"),jsonPath.getString("data.created_at"));
+        assertEquals(jsonPath1.getString("data.priority"),jsonPath.getString("data.priority"));
+        assertEquals(jsonPath1.getString("data.last_reply"),jsonPath.getString("data.last_reply"));
+        assertEquals(jsonPath1.getString("data.created_at"),jsonPath.getString("data.created_at"));
         Assert.assertNotEquals(jsonPath1.getString("data.updated_at"),jsonPath.getString("data.updated_at"));
 
     }
@@ -916,25 +917,25 @@ public class API_Stepdefinitions {
 
         jsonPath = response.jsonPath();
 
-        Assert.assertEquals(categoryId, jsonPath.getInt("data[" + dataIndex + "].category_id"));
-        Assert.assertEquals(formId, jsonPath.getInt("data[" + dataIndex + "].form_id"));
-        Assert.assertEquals(name, jsonPath.getString("data[" + dataIndex + "].name"));
-        Assert.assertEquals(title, jsonPath.getString("data[" + dataIndex + "].title"));
-        Assert.assertEquals(minimum_amount, jsonPath.getString("data[" + dataIndex + "].minimum_amount"));
-        Assert.assertEquals(maximum_amount, jsonPath.getString("data[" + dataIndex + "].maximum_amount"));
-        Assert.assertEquals(per_installment, jsonPath.getString("data[" + dataIndex + "].per_installment"));
-        Assert.assertEquals(installment_interval, jsonPath.getInt("data[" + dataIndex + "].installment_interval"));
-        Assert.assertEquals(total_installment, jsonPath.getInt("data[" + dataIndex + "].total_installment"));
-        Assert.assertEquals(application_fixed_charge, jsonPath.getString("data[" + dataIndex + "].application_fixed_charge"));
-        Assert.assertEquals(application_percent_charge, jsonPath.getString("data[" + dataIndex + "].application_percent_charge"));
-        Assert.assertEquals(instruction, jsonPath.getString("data[" + dataIndex + "].instruction"));
-        Assert.assertEquals(delay_value, jsonPath.getInt("data[" + dataIndex + "].delay_value"));
-        Assert.assertEquals(fixed_charge, jsonPath.getString("data[" + dataIndex + "].fixed_charge"));
-        Assert.assertEquals(percent_charge, jsonPath.getString("data[" + dataIndex + "].percent_charge"));
-        Assert.assertEquals(is_featured, jsonPath.getInt("data[" + dataIndex + "].is_featured"));
-        Assert.assertEquals(status, jsonPath.getInt("data[" + dataIndex + "].status"));
-        Assert.assertEquals(created_at, jsonPath.getString("data[" + dataIndex + "].created_at"));
-        Assert.assertEquals(updated_at, jsonPath.getString("data[" + dataIndex + "].updated_at"));
+        assertEquals(categoryId, jsonPath.getInt("data[" + dataIndex + "].category_id"));
+        assertEquals(formId, jsonPath.getInt("data[" + dataIndex + "].form_id"));
+        assertEquals(name, jsonPath.getString("data[" + dataIndex + "].name"));
+        assertEquals(title, jsonPath.getString("data[" + dataIndex + "].title"));
+        assertEquals(minimum_amount, jsonPath.getString("data[" + dataIndex + "].minimum_amount"));
+        assertEquals(maximum_amount, jsonPath.getString("data[" + dataIndex + "].maximum_amount"));
+        assertEquals(per_installment, jsonPath.getString("data[" + dataIndex + "].per_installment"));
+        assertEquals(installment_interval, jsonPath.getInt("data[" + dataIndex + "].installment_interval"));
+        assertEquals(total_installment, jsonPath.getInt("data[" + dataIndex + "].total_installment"));
+        assertEquals(application_fixed_charge, jsonPath.getString("data[" + dataIndex + "].application_fixed_charge"));
+        assertEquals(application_percent_charge, jsonPath.getString("data[" + dataIndex + "].application_percent_charge"));
+        assertEquals(instruction, jsonPath.getString("data[" + dataIndex + "].instruction"));
+        assertEquals(delay_value, jsonPath.getInt("data[" + dataIndex + "].delay_value"));
+        assertEquals(fixed_charge, jsonPath.getString("data[" + dataIndex + "].fixed_charge"));
+        assertEquals(percent_charge, jsonPath.getString("data[" + dataIndex + "].percent_charge"));
+        assertEquals(is_featured, jsonPath.getInt("data[" + dataIndex + "].is_featured"));
+        assertEquals(status, jsonPath.getInt("data[" + dataIndex + "].status"));
+        assertEquals(created_at, jsonPath.getString("data[" + dataIndex + "].created_at"));
+        assertEquals(updated_at, jsonPath.getString("data[" + dataIndex + "].updated_at"));
     }
 
     @Then("The API user prepares a POST request containing the correct data to send to the user ticket add endpoint")
@@ -1011,7 +1012,7 @@ public class API_Stepdefinitions {
     @And("The API user verifies that the id value in the response body is {int}")
     public void theAPIUserVerifiesThatTheIdValueInTheResponseBodyIsDataId(int dataId) {
         jsonPath=response.jsonPath();
-        Assert.assertEquals(dataId,jsonPath.getInt("data.id"));
+        assertEquals(dataId,jsonPath.getInt("data.id"));
     }
     @Then("The API user sends a DELETE request to delete the created ticket and saves the response from the user ticket delete endpoint with valid authorization information")
     public void The_apı_user_sends_a_delete_request_to_delete_the_created_ticket_and_saves_the_response_from_the_user_ticket_delete_endpoint_with_valid_authorization_information() {
@@ -1083,7 +1084,7 @@ public class API_Stepdefinitions {
     @And("The API user Verifies that the status information in the response body is {int}")
     public void theAPIUserVerifiesThatTheStatusInformationInTheResponseBodyIsStatus(int status) {
         jsonPath=response.jsonPath();
-        Assert.assertEquals(status,jsonPath.getInt("data.status"));
+        assertEquals(status,jsonPath.getInt("data.status"));
 
     }
 
@@ -1396,7 +1397,7 @@ public class API_Stepdefinitions {
         String deleteId = jsonPath.getString("data[\"Removed  blog id\"]");
         System.out.println("deleteId = " + deleteId);
 
-        Assert.assertEquals(id, deleteId);
+        assertEquals(id, deleteId);
     }
 
 
@@ -1465,22 +1466,22 @@ public class API_Stepdefinitions {
     @Given("The API admin verifies that the content of the data field in the response body includes {int}, {int}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}")
     public void the_apı_admin_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int user_id, int method_code, String amount, String method_currency, String charge, String rate, String final_amo, String btc_amo, String btc_wallet, String trx, String payment_try, int status, int from_api, String admin_feedback, String created_at, String updated_at) {
         jsonPath = response.jsonPath();
-        Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
-        Assert.assertEquals(method_code, jsonPath.getInt("data.method_code"));
-        Assert.assertEquals(amount, jsonPath.getString("data.amount"));
-        Assert.assertEquals(method_currency, jsonPath.getString("data.method_currency"));
-        Assert.assertEquals(charge, jsonPath.getString("data.charge"));
-        Assert.assertEquals(rate, jsonPath.getString("data.rate"));
-        Assert.assertEquals(final_amo, jsonPath.getString("data.final_amo"));
-        Assert.assertEquals(btc_amo, jsonPath.getString("data.btc_amo"));
-        Assert.assertEquals(btc_wallet, jsonPath.getString("data.btc_wallet"));
-        Assert.assertEquals(trx, jsonPath.getString("data.trx"));
-        Assert.assertEquals(payment_try, jsonPath.getString("data.payment_try"));
-        Assert.assertEquals(status, jsonPath.getInt("data.status"));
-        Assert.assertEquals(from_api, jsonPath.getInt("data.from_api"));
+        assertEquals(user_id, jsonPath.getInt("data.user_id"));
+        assertEquals(method_code, jsonPath.getInt("data.method_code"));
+        assertEquals(amount, jsonPath.getString("data.amount"));
+        assertEquals(method_currency, jsonPath.getString("data.method_currency"));
+        assertEquals(charge, jsonPath.getString("data.charge"));
+        assertEquals(rate, jsonPath.getString("data.rate"));
+        assertEquals(final_amo, jsonPath.getString("data.final_amo"));
+        assertEquals(btc_amo, jsonPath.getString("data.btc_amo"));
+        assertEquals(btc_wallet, jsonPath.getString("data.btc_wallet"));
+        assertEquals(trx, jsonPath.getString("data.trx"));
+        assertEquals(payment_try, jsonPath.getString("data.payment_try"));
+        assertEquals(status, jsonPath.getInt("data.status"));
+        assertEquals(from_api, jsonPath.getInt("data.from_api"));
         Assert.assertNull(admin_feedback, jsonPath.getString("data.admin_feedback"));
-        Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
-        Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
+        assertEquals(created_at, jsonPath.getString("data.created_at"));
+        assertEquals(updated_at, jsonPath.getString("data.updated_at"));
     }
 
     @Given("API Kullanıcısı, body deki reason bilgisinin <null> oldugunu dogrular")
@@ -1663,7 +1664,7 @@ public class API_Stepdefinitions {
         Integer deleteId = jsonPath.getInt("data[\"Deleted loan plan id\"]");
         System.out.println("deleteId = " + deleteId);
 
-        Assert.assertEquals(id, deleteId);
+        assertEquals(id, deleteId);
     }
 
 
@@ -1704,14 +1705,14 @@ public class API_Stepdefinitions {
         String exeptChange = "Status changed";
         String change = jsonPath.getString("data[\"message\"]");
 
-        Assert.assertEquals(exeptChange, change);
+        assertEquals(exeptChange, change);
     }
 
 
     @Then("Status id'nin  new status bigisi ile esit oldugunu dogrular")
     public void statusIdNinNewStatusBigisiIleEsitOldugunuDogrular() {
 
-        Assert.assertEquals(jsonPath1.getString("data[\"new status\"]"),jsonPath.getString("data[0].status"));
+        assertEquals(jsonPath1.getString("data[\"new status\"]"),jsonPath.getString("data[0].status"));
 
         // response.then().assertThat().body("data[\"new status\"]",Matchers.equalTo())
         String status1= jsonPath1.getString("data[\"new status\"]");
@@ -1779,6 +1780,162 @@ public class API_Stepdefinitions {
 
 
     }
+
+    //murat
+    @Given("API kullanicisi endpointe gondermek icin dogru datalar iceren bir POST request hazirlar")
+    public void api_kullanicisi_endpointe_gondermek_icin_dogru_datalar_iceren_bir_post_request_hazirlar() {
+        requestBody = new JSONObject();
+        requestBody.put("category_id", "6");
+        requestBody.put("name", "ApiTeam6 Plan");
+        requestBody.put("title", "Team6API");
+    }
+
+    //murat
+    @Given("API kullanicisi POST request gonderir ve donen responsu GECERLI authorization bilgisi ile kaydeder")
+    public void api_kullanicisi_post_request_gonderir_ve_donen_responsu_gecerlı_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    //murat
+    @Given("API kullanicisi bodysiz POST request gonderir ve donen responsu GECERLI authorization bilgisi ile kaydeder")
+    public void api_kullanicisi_bodysiz_post_request_gonderir_ve_donen_responsu_gecerlı_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    //murat
+    @Given("API kullanicisi POST request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_post_request_gonderir_ve_donen_response_u_gecersız_authorization_bilgisi_ile_kaydeder(int status, String message) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .contentType(ContentType.JSON)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .body(requestBody.toString())
+                    .post(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    //murat
+    int upDateId;
+    int id;
+
+    @Given("Response body de döndürülen Updated loan plan id'yi kaydeder")
+    public void response_body_de_döndürülen_Updated_loan_plan_id_yi_kaydeder() {
+        jsonPath = response.jsonPath();
+        upDateId = jsonPath.getInt("data[\"Updated loan plan id\"]");
+        //"Updated loan plan id" ifadesinde boşluklar ve özel karakterler bulunması gibi durumlar,
+        // bu özellik adının bir dize içinde ifade edilmesini gerektirir ve bu nedenle köşeli parantez içinde kullanılır.
+    }
+
+    //murat
+    @Given("Updated loan plan id ile GET request gönderir")
+    public void updated_loan_plan_id_ile_get_request_gönderir() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + upDateId);
+
+        response.prettyPrint();
+    }
+
+    //murat
+    @Given("Updated loan plan id ile responsedan dönen id dogrulanır")
+    public void updated_loan_plan_id_ile_responsedan_dönen_id_dogrulanır() {
+        jsonPath = response.jsonPath();
+        id = jsonPath.getInt("data[0].id");
+
+        assertEquals(upDateId, id);
+    }
+
+    //murat
+    @Given("API kullanıcısı DELETE request gönderir ve dönen response'u gecerli authorization bilgisi ile kaydeder")
+    public void apı_kullanıcısı_delete_request_gönderir_ve_dönen_response_u_gecerli_authorization_bilgisi_ile_kaydeder() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+    //murat
+    @Given("API kullanicisi DELETE request gonderir ve donen response'u GECERSİZ authorization ile kaydeder ve durum kodunun {int} ve response body'deki error bilgisinin {string} oldugu dogrulanmali")
+    public void apı_kullanicisi_delete_request_gonderir_ve_donen_response_u_gecersiz_authorization_ile_kaydeder_ve_durum_kodunun_ve_response_body_deki_error_bilgisinin_oldugu_dogrulanmali(Integer int1, String string) {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + Authentication.createToken("user"))
+                    .when()
+                    .delete(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+    }
+
+    //murat
+    int deletedId;
+    @Given("Response body de döndürülen Deleted withdrawal id'yi kaydeder")
+    public void response_body_de_döndürülen_deleted_withdrawal_id_yi_kaydeder() {
+        jsonPath = response.jsonPath();
+        deletedId = jsonPath.getInt("data[\"Deleted withdrawal id\"]");
+        System.out.println("deletedId = " + deletedId);
+    }
+
+    //murat
+    @Given("Deleted withdrawal id ile GET request gönderir")
+    public void deleted_withdrawal_id_ile_get_request_gönderir() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath + "/" + deletedId);
+
+        response.prettyPrint();
+    }
+
+    //murat
+    @Given("Deleted withdrawal id ile responsedan dönen mesaj dogrulanır")
+    public void deleted_withdrawal_id_ile_responsedan_dönen_id_dogrulanır() {
+        jsonPath = response.jsonPath();
+        mesaj = jsonPath.getString("data.message");
+
+        assertEquals("No withdraw.",mesaj);
+    }
+
 }
 
 
