@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 
 public class DB_Manage {
 
+
     private static String rememberTokenQuery = "select remember_token from admins where email=?;";
     private static String loansInsertQuery = "insert into loans(id,loan_number,plan_id,user_id) values (?,?,?,?)";
     private static String loansDeleteQuery = "delete from loans where id=?";
@@ -32,6 +33,7 @@ public class DB_Manage {
         DB_Manage.adminNotificationsId = adminNotificationsId;
     }
 
+
     public static ResultSet getResultSet() {
         return resultSet;
     }
@@ -55,6 +57,7 @@ public class DB_Manage {
     public static String getQuery() {
         return query;
     }
+
 
     public static void setQuery(String query) {
         DB_Manage.query = query;
@@ -102,7 +105,9 @@ public class DB_Manage {
 
     public static String getLoansDeleteQuery() {
         return loansDeleteQuery;
+
     }
+
 
     public static String getAdminNotificationsSelect() {
         return adminNotificationsSelect;
@@ -117,4 +122,33 @@ public class DB_Manage {
     }
 
 
+    //murat
+    private String subscribersEmailNotLike = "select * from subscribers where email not like '%a%';";
+
+
+    public String getSubscribersEmailNotLike() {
+        return subscribersEmailNotLike;
+    }
+
+    //murat
+    private String usersOrderByLastnameAscFirstnameDesc = "select * from users order by lastname asc, firstname DESC;";
+
+    public String getUsersOrderByLastnameAscFirstnameDesc () {
+        return usersOrderByLastnameAscFirstnameDesc;
+    }
+
+    //murat
+    private String UsersFirstLastnameInList = " select lastname from users where lastname is not null order by lastname asc, firstname DESC LIMIT 1;";
+
+    public String getUsersFirstLastnameInList() {
+        return UsersFirstLastnameInList;
+    }
+
+    //murat
+    private String transactionsRemarkSumAmount = " select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
+
+    public String getTransactionsRemarkSumAmount() {
+        return transactionsRemarkSumAmount;
+
+    }
 }

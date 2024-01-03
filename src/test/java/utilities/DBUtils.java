@@ -14,11 +14,10 @@ public class DBUtils {
     //createConnection database e baglanmak icin. Burda url, username, password u kullanarak database baglaniyoruz
     //Database e ne zaman baglanmak isterse bu methodu cagrabiliriz
     //Bu method u data cok BeforeMethod icinde setup icin kullanacagiz
-    String url = "jdbc:mysql://194.140.198.209/wonderworld_qa";
-    ;
-    String username = ConfigurationReader.getProperty("USERNAME");
-    String password = ConfigurationReader.getProperty("PASSWORD");
 
+    String url="jdbc:mysql://45.87.83.5/u168183796_qaloantec";
+    String username=ConfigurationReader.getProperty("USERNAME");
+    String password=ConfigurationReader.getProperty("PASSWORD");
 
     public static void createConnection() {
         String url = ConfigurationReader.getProperty("URL");

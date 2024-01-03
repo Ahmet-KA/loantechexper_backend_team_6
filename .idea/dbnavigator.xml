@@ -13,13 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24">
-      <console name="Connection" type="STANDARD" schema="u168183796_qaloantec" session="Main"><![CDATA[select an.id from admin_notifications an order by an.id desc limit 1
-
-
-
-insert into admin_notifications (id,click_url,created_at,is_read,title,updated_at,user_id) values (11,'/admin/ticket/view/ahmet',localtimestamp(),0,'A new contact message has been Ahmet submitted',localtimestamp(),99);
-
-update admin_notifications an set an.is_read=1 where an.id=6603 and an.is_read=0]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
