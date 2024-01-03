@@ -11,9 +11,12 @@ import org.junit.runner.RunWith;
                 "junit:target/xml-report/cucumber.xml"},
         features = "src/test/resources/DB",
         glue = "stepdefinitions",
+
         tags = "",
+
         dryRun = false
 )
+
 public class DB_Runner {
 
 

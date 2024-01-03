@@ -12,7 +12,11 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
+<<<<<<< HEAD
     <connection id="aafd79ab-95bc-4689-a039-4f520a39fac4">
+=======
+    <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24">
+>>>>>>> main
       <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
@@ -21,11 +25,19 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
+<<<<<<< HEAD
       <object connection-id="aafd79ab-95bc-4689-a039-4f520a39fac4" object-ref="consoles/Connection" />
     </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="aafd79ab-95bc-4689-a039-4f520a39fac4" />
+=======
+      <object connection-id="e9b48050-9192-4a8c-ac99-8f6446c06a24" object-ref="consoles/Connection" />
+    </open-files>
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24" />
+>>>>>>> main
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
@@ -36,7 +48,11 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
+<<<<<<< HEAD
       <connection id="aafd79ab-95bc-4689-a039-4f520a39fac4" active="true" signed="true">
+=======
+      <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24" active="true" signed="true">
+>>>>>>> main
         <database>
           <name value="Connection" />
           <description value="" />
@@ -49,7 +65,11 @@
           <url-type value="DATABASE" />
           <host value="45.87.83.5" />
           <port value="3306" />
+<<<<<<< HEAD
           <database value="u168183796_qaloantec " />
+=======
+          <database value="u168183796_qaloantec" />
+>>>>>>> main
           <tns-folder value="" />
           <tns-profile value="" />
           <type value="USER_PASSWORD" />
@@ -220,7 +240,7 @@
       <audit-columns>
         <column-names value="" />
         <visible value="true" />
-        <editable value="false" />
+        <editable value="true" />
       </audit-columns>
     </dataset-grid-settings>
     <dataset-editor-settings>
@@ -441,7 +461,7 @@
     </code-completion-settings>
     <execution-engine-settings>
       <statement-execution>
-        <fetch-block-size value="100" />
+        <fetch-block-size value="1000" />
         <execution-timeout value="20" />
         <debug-execution-timeout value="600" />
         <focus-result value="false" />
