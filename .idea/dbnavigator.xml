@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -13,30 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="aafd79ab-95bc-4689-a039-4f520a39fac4">
-      <console name="Connection" type="STANDARD" schema="u168183796_qaloantec" session="Main"><![CDATA[select remember_token from admins where email='info@loantechexper.com'
-
-# DB_US15 : "subscribers" tablosunda "email" datalarında  "a"  içermeyen dataları listeleyiniz.
-            select * from subscribers  
-            where email
-            not like '%a%'
-
-
-# DB_US19 : "users" tablosundaki tum kayitlari "lastname"  sirali,"firstname" Ters sirali olarak listeleyin.
-            select * from users order by lastname asc, firstname DESC
-    /* soyadlarına göre artan (ASC) sıralı ve
-    aynı soyada sahip kayıtların içinde ise isimlerine göre azalan (DESC) sıralı olarak listeleyecektir  */   
-
-# Listedeki ilk soyadını dogrulayınız.
-              select lastname from users 
-              where lastname is not null
-              order by lastname asc, firstname DESC 
-              LIMIT 1
-
-
-# DB_US19 : "transactions" tablosunda "remark" türüne göre "amount" değerleri toplamını bulup 1000 $dan yüksek olanları doğrulayınız.
-              select remark, sum(amount) as total_amount from transactions 
-              group by remark
-              having total_amount > 1000;]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
