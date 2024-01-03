@@ -32,7 +32,6 @@ public class DB_US_09 {
         Object rowCount = DB_Manage.getPreparedStatement().executeUpdate();
         Assert.assertEquals(1,rowCount);
 
-
     }
     @When("loans tablosundan silinecek data query hazirlanir")
     public void loans_tablosundan_silinecek_data_query_hazirlanir() throws SQLException {
