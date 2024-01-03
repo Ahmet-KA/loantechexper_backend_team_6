@@ -3,7 +3,7 @@ Feature: Bir yönetici (admin) olarak API bağlantısı üzerinden loans list'e 
   gönderildiginde dönen status code'un 200 oldugu ve response remark bilgisinin "success" oldugu dogrulanmali
 
     Given The API user sets "api/loans/list" path parameters
-    Then Endpoint'e gecerli authorization bilgileri ile bir GET requestt gonderilir ve kaydedilir
+    Then Endpoint'e gecerli authorization bilgileri ile bir GET requestt gonderilir ve kaydediliir
     Then API kullanıcısı durum kodunun 200 olduğunu doğrular
     And API Kullanıcısı, response body'deki remark bilgisinin "success" oldugu dogrulanmali
 

@@ -13,15 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24">
-      <console name="Connection" type="STANDARD" schema="u168183796_qaloantec" session="Main"><![CDATA[select remember_token from admins where email='info@loantechexper.com'
-
-# Database üzerinde "Users" tablosunda "country_code=TR" olmayan ve "id=11" olan datanın "firstname" ve "lastname" bilgilerini doğrulayınız.
-
-
-select * from loans order by id asc
-
-insert into loans(id,loan_number,plan_id,user_id) values (13,'DVS1JNN342Q7',93,42)
-delete from loans where id=13]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
