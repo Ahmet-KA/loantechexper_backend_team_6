@@ -16,17 +16,6 @@ public class DB_US_02 {
     ResultSet resultSet;
     PreparedStatement preparedStatement;
 
-    @Given("Database bağlantisi kurulur.")
-    public void database_bağlantisi_kurulur() {
-
-        DBUtils.createConnection();
-    }
-
-    @Then("database connection kapatilir")
-    public void database_connection_kapatilir() {
-
-        DBUtils.closeConnection();
-    }
 
     @And("resultset ile donen remember_token alanindaki data dogrulanir")
     public void resultsetIleDonenRemember_tokenAlanindakiDataDogrulanir() throws SQLException {

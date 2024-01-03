@@ -11,6 +11,9 @@ public class DB_Manage {
     private static String rememberTokenQuery = "select remember_token from admins where email=?;";
     private static String loansInsertQuery = "insert into loans(id,loan_number,plan_id,user_id) values (?,?,?,?)";
     private static String loansDeleteQuery = "delete from loans where id=?";
+    private static String adminNotificationsSelect = "select an.id from admin_notifications an order by an.id desc limit 1";
+    private static String adminNotificationsInsert = "insert into admin_notifications (id,click_url,created_at,is_read,title,updated_at,user_id) values (?,'/admin/ticket/view/ahmet',localtimestamp(),0,'A new contact message has been Ahmet submitted',localtimestamp(),99);";
+    private static String adminNotificationsUpdate = "update admin_notifications an set an.is_read=1 where an.id=? and an.is_read=0";
     private static Integer loansId;
     private static String loansNumber;
     private static Integer loansPlanId;
@@ -19,6 +22,15 @@ public class DB_Manage {
     private static Faker faker = new Faker();
     private static PreparedStatement preparedStatement;
     private static ResultSet resultSet;
+    private static int adminNotificationsId;
+
+    public static int getAdminNotificationsId(){
+        return adminNotificationsId;
+    }
+
+    public static void setAdminNotificationsId(int adminNotificationsId){
+        DB_Manage.adminNotificationsId = adminNotificationsId;
+    }
 
     public static ResultSet getResultSet() {
         return resultSet;
@@ -28,11 +40,11 @@ public class DB_Manage {
         DB_Manage.resultSet = resultSet;
     }
 
-    public static PreparedStatement getPreparedStatement(){
+    public static PreparedStatement getPreparedStatement() {
         return preparedStatement;
     }
 
-    public static void setPreparedStatement(PreparedStatement preparedStatement){
+    public static void setPreparedStatement(PreparedStatement preparedStatement) {
         DB_Manage.preparedStatement = preparedStatement;
     }
 
@@ -52,7 +64,7 @@ public class DB_Manage {
         DB_Manage.loansId = loansId;
     }
 
-    public static Integer getLoansId(){
+    public static Integer getLoansId() {
         return loansId;
     }
 
@@ -60,7 +72,7 @@ public class DB_Manage {
         DB_Manage.loansNumber = loansNumber;
     }
 
-    public static String getLoansNumber(){
+    public static String getLoansNumber() {
         return loansNumber;
     }
 
@@ -68,7 +80,7 @@ public class DB_Manage {
         DB_Manage.loansPlanId = loansPlanId;
     }
 
-    public static Integer getLoansPlanId(){
+    public static Integer getLoansPlanId() {
         return loansPlanId;
     }
 
@@ -76,7 +88,7 @@ public class DB_Manage {
         DB_Manage.loansUserId = loansUserId;
     }
 
-    public static Integer getLoansUserId(){
+    public static Integer getLoansUserId() {
         return loansUserId;
     }
 
@@ -90,6 +102,18 @@ public class DB_Manage {
 
     public static String getLoansDeleteQuery() {
         return loansDeleteQuery;
+    }
+
+    public static String getAdminNotificationsSelect() {
+        return adminNotificationsSelect;
+    }
+
+    public static String getAdminNotificationsInsert() {
+        return adminNotificationsInsert;
+    }
+
+    public static String getAdminNotificationsUpdate() {
+        return adminNotificationsUpdate;
     }
 
 
