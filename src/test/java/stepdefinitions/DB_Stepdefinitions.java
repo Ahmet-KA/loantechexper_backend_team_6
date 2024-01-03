@@ -12,6 +12,17 @@ import java.sql.SQLException;
 public class DB_Stepdefinitions {
 
 
+    @Given("Database bağlantisi kurulur.")
+    public void database_bağlantisi_kurulur() {
+
+        DBUtils.createConnection();
+    }
+
+    @Then("database connection kapatilir")
+    public void database_connection_kapatilir() {
+
+        DBUtils.closeConnection();
+    }
 
 
 }
