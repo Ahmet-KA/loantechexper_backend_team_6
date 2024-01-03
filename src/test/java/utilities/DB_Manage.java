@@ -104,10 +104,10 @@ public class DB_Manage {
     }
 
     //murat
-    private String usersOrderByLastnameDescFirstname = "select * from users order by lastname asc, firstname DESC;";
+    private String usersOrderByLastnameAscFirstnameDesc = "select * from users order by lastname asc, firstname DESC;";
 
-    public String getUsersOrderByLastnameDescFirstname() {
-        return usersOrderByLastnameDescFirstname;
+    public String getUsersOrderByLastnameAscFirstnameDesc () {
+        return usersOrderByLastnameAscFirstnameDesc;
     }
 
     //murat

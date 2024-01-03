@@ -1,10 +1,10 @@
 Feature:"Subscribers" tablosunda "email" datalarında  "a"  içermeyen dataları listeleyiniz.
 
   Background: Database bağlantısı yapılır
-    * Database baglantısı kurulur
+    * Database bağlantisi kurulur.
 
   Scenario: "Subscribers" tablosunda "email" datalarında  "a"  içermeyen dataları listelenir
 
     * subscribersQuery hazirlanir
-    * data dogrulanır
-    * Database kapatilir
+    * data listelenir ve dogrulanır
+    * database connection kapatilir

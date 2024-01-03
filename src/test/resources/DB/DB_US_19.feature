@@ -2,13 +2,13 @@ Feature: "users" tablosundaki tum kayitlari "lastname"  sirali,"firstname" Ters 
 
 
   Background: Database bağlantısı yapılır
-    * Database baglantısı kurulur
+    * Database bağlantisi kurulur.
 
 
   Scenario: "users" tablosundaki tum kayitlari "lastname" sirali,"firstname" Ters sirali olarak listelenir.Listedeki ilk soyadı dogrulanir
 
-    * usersOrderByLastnameDescFirstname query hazirlanir
+    * usersOrderByLastnameAscFirstnameDesc query hazirlanir
 
     * UsersFirstLastnameInList query hazirlanir
 
-    * Database kapatilir
+    * database connection kapatilir
