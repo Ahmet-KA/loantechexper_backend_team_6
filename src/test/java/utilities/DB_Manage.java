@@ -149,6 +149,23 @@ public class DB_Manage {
 
     public String getTransactionsRemarkSumAmount() {
         return transactionsRemarkSumAmount;
-
     }
+
+    private static String adminNotificationsUserIdSelect="select * from admin_notifications Where user_id=1 AND id  > 20;";
+
+    public static String getAdminNotificationsUserIdSelect(){return adminNotificationsUserIdSelect;}
+
+    private static String gateways="SELECT * FROM gateways ORDER BY code Desc LIMIT 5;";
+    public static String getGateways(){return gateways;}
+    private static String categoriesInsert="INSERT into categories (id,name,description)Values(?,?,?);";
+    public static String getCategoriesInsert(){return categoriesInsert;}
+
+    private static String updateLogsInsertVersion="INSERT into update_logs (id,version)Values(?,?);";
+    public  static String getUpdateLogsInsertVersion(){return updateLogsInsertVersion;}
+
+    private static String updateLogsUpdateLog = "UPDATE update_logs set update_log=? where version = \"?\";";
+    public static String getUpdateLogsUpdateLog() {return updateLogsUpdateLog;}
+
+    private static String updateLogsUpdatedLog = "select * from update_logs where version = \"?\";";
+    public static String getUpdateLogsUpdatedLog() {return updateLogsUpdatedLog;}
 }
