@@ -438,8 +438,8 @@ public class API_Stepdefinitions {
         Assert.assertEquals(id, jsonPath.getInt("data[0].id"));
     }
 
-    @Given("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gönderilerek kayıt oluşturulduğu doğrulanabilir")
-    public void response_bodyde_dönen_added_category_id_ile_api_categories_details_id_endpoint_ine_get_request_gönderilerek_kayıt_oluşturulduğu_doğrulanabilir() {
+    @Given("Response bodyde dönen Added category id ile api categories details id endpoint'ine GET request gonderilerek kayıt oluşturuldugu dogrulanabilir")
+    public void response_bodyde_donen_added_category_id_ile_api_categories_details_id_endpoint_ine_get_request_gonderilerek_kayit_oluşturuldugu_dogrulanabilir() {
 
         jsonPath = response.jsonPath();
         Integer id = jsonPath.getInt("data[\"Added category id\"]");
@@ -670,5 +670,180 @@ public class API_Stepdefinitions {
         System.out.println("mesaj: " + mesaj);
 
         Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+    @Then("The API user verifies that the content of the data field in the response body includes {int}, {int}, {string}, {string}, {string}, {string}, {int}, {int}, {string}, {string}, {string}")
+    public void the_api_user_verifies_that_the_content_of_the_data_field_in_the_response_body_includes(int id, int user_id, String name, String email, String ticket, String subject, int status, int priority, String last_reply, String created_at, String updated_at) {
+        jsonPath = response.jsonPath();
+        Assert.assertEquals(id, jsonPath.getInt("data.id"));
+        Assert.assertEquals(user_id, jsonPath.getInt("data.user_id"));
+        Assert.assertEquals(name, jsonPath.getString("data.name"));
+        Assert.assertEquals(email, jsonPath.getString("data.email"));
+        Assert.assertEquals(ticket, jsonPath.getString("ticket"));
+        Assert.assertEquals(subject, jsonPath.getInt("data.subject"));
+        Assert.assertEquals(status, jsonPath.getInt("data.status"));
+        Assert.assertEquals(priority, jsonPath.getString("data.priority"));
+        Assert.assertEquals(last_reply, jsonPath.getString("data.last_reply"));
+        Assert.assertEquals(created_at, jsonPath.getString("data.created_at"));
+        Assert.assertEquals(updated_at, jsonPath.getString("data.updated_at"));
+
+    }
+
+    @And("The API user saves the response from the user subscriber delete endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheUserSubscriberDeleteEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("The API user saves the response from the user subscribe delete endpoint with invalid authorization information and confirms that the status code is {string} and the error message is Unauthorized")
+    public void theAPIUserSavesTheResponseFromTheUserSubscribeDeleteEndpointWithInvalidAuthorizationInformationAndConfirmsThatTheStatusCodeIsAndTheErrorMessageIsUnauthorized(int arg0) {
+
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .delete(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    @And("The API user saves the response from the user subscriber detail endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheUserSubscriberDetailEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user saves the response from the user changepassword endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheUserChangepasswordEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .body(requestBody.toString())
+                .patch(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Then("The API user saves the response from the admin subscriber details id endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminSubscriberDetailsIdEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("admintoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user prepares a POST request containing the correct data to send to the admin subscriber add endpoint")
+    public void theAPIUserPreparesAPOSTRequestContainingTheCorrectDataToSendToTheAdminSubscriberAddEndpoint() {
+        /*
+        {
+    "email":"megenc@gmail.com"
+}
+         */
+        requestBody=new JSONObject();
+        requestBody.put("email","megenc@gmail.com");
+
+    }
+
+    @And("The API user prepares a POST request without data to send to the admin subscriber add endpoint")
+    public void theAPIUserPreparesAPOSTRequestWithoutDataToSendToTheAdminSubscriberAddEndpoint() {
+        requestBody=new JSONObject();
+    }
+
+    @And("The API user prepares a POST request with missing data to send to the admin subscriber add endpoint")
+    public void theAPIUserPreparesAPOSTRequestWithMissingDataToSendToTheAdminSubscriberAddEndpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("subject","Test Subscriber");
+    }
+
+    @Then("The API user saves the response from the user changepassword endpoint with invalid authorization information and verifies that the status code is '401' and the error message is Unauthorized")
+    public void theAPIUserSavesTheResponseFromTheUserChangepasswordEndpointWithInvalidAuthorizationInformationAndVerifiesThatTheStatusCodeIsAndTheErrorMessageIsUnauthorized() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .header("Accept", "application/json")
+                    .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                    .when()
+                    .patch(fullPath);
+
+            response.prettyPrint();
+        } catch (Exception e) {
+            mesaj = e.getMessage();
+        }
+        System.out.println("mesaj: " + mesaj);
+
+        Assert.assertTrue(mesaj.contains("status code: 401, reason phrase: Unauthorized"));
+    }
+
+    @Then("The API user saves the response from the admin subscriber add endpoint with valid authorization information")
+    public void theAPIUserSavesTheResponseFromTheAdminSubscriberAddEndpointWithValidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + Authentication.createToken("usertoken"))
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @When("The API user sends a POST request and saves the response from the admin subscriber add endpoint with invalid authorization information")
+    public void theAPIUserSendsAPOSTRequestAndSavesTheResponseFromTheAdminSubscriberAddEndpointWithInvalidAuthorizationInformation() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .headers("Authorization", "Bearer " + ConfigurationReader.getProperty("password"))
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The API user prepares a PATCH request containing the correct data to send to the user changepassword endpoint")
+    public void theAPIUserPreparesAPATCHRequestContainingTheCorrectDataToSendToTheUserChangepasswordEndpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("current_password","Loan.741");
+        requestBody.put("password","Loan.738");
+    }
+
+    @And("The API user prepares a PATCH request containing the incorrect data to send to the user changepassword endpoint")
+    public void theAPIUserPreparesAPATCHRequestContainingTheIncorrectDataToSendToTheUserChangepasswordEndpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("current_password","Loan.738");
+        requestBody.put("password","12345678");
+    }
+
+    @And("The API user prepares a PATCH request containing the another incorrect data to send to the user changepassword endpoint")
+    public void theAPIUserPreparesAPATCHRequestContainingTheAnotherIncorrectDataToSendToTheUserChangepasswordEndpoint() {
+        requestBody=new JSONObject();
+        requestBody.put("current_password","Loan.738");
+        requestBody.put("password","Aa345678");
     }
 }
