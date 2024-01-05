@@ -168,4 +168,23 @@ public class DB_Manage {
 
     private static String updateLogsUpdatedLog = "select * from update_logs where version = \"?\";";
     public static String getUpdateLogsUpdatedLog() {return updateLogsUpdatedLog;}
+
+    private static String depositsTotalUSDAmountQuery="SELECT SUM(amount) FROM deposits WHERE method_code IN ( SELECT  method_code FROM gateway_currencies WHERE currency = 'USD');";
+
+
+    public static String getTotalUSDQuery() {
+        return depositsTotalUSDAmountQuery;
+    }
+    private static String adminpasswordInsertQuery="insert into admin_password_resets (email,token,status,created_at) values (?,?,?,?),(?,?,?,?);";
+
+    public static String getAdminpasswordInsertQuery() {
+        return adminpasswordInsertQuery;
+    }
+    private static String depositIdQuery="SELECT DISTINCT user_id AS filtered_id FROM deposits WHERE method_currency = 'USD' AND amount  BETWEEN 100 AND 500;";
+
+    public static String getDepositIdQuery() {
+        return depositIdQuery;
+    }
+
+
 }
