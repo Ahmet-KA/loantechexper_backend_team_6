@@ -187,4 +187,45 @@ public class DB_Manage {
     }
 
 
+    //Gulay
+
+    public static String getSupportMessageSupportTicket() {
+        return supportMessageSupportTicket;
+    }
+    //Gulay
+    private static String supportMessageSupportTicket= "Select id from support_messages Where message= 'Gulay5';";
+    //Gulay
+    public static String getUsersFirstNameLastName() {
+        return usersFirstNameLastName;
+    }
+    //Gulay
+    private static String usersFirstNameLastName= "Select firstname, lastname  from users where country_code not like '%TR%' and id='11'; ";
+
+    //Gulay
+    public static String getCronJobLogsUpdate() {
+        return cronJobLogsUpdate;
+    }
+    //Gulay
+    private static String cronJobLogsUpdate="Insert Into cron_job_logs(id,cron_job_id, start_at, end_at, duration, error, created_at, updated_at) VALUES (?, 155, '2023-11-10 13:17:25', '2023-11-12 13:17:25',1 , 'Princiiil Metrics Developer', '2023-10-14 00:00:00', '2023-12-22 13:11:49');";
+
+
+
+// US29
+
+//Gulay
+
+    public static String getUpdateLogDeleteQuery() {
+        return updateLogDeleteQuery;
+    }
+    //Gulay
+
+    private static String  updateLogDeleteQuery = "DELETE FROM u168183796_qaloantec.update_logs WHERE id = ?;";
+
+
+
 }
+
+
+
+
+
