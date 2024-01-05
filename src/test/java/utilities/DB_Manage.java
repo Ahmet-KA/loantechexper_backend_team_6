@@ -220,6 +220,19 @@ public class DB_Manage {
 
     private static String  updateLogDeleteQuery = "DELETE FROM u168183796_qaloantec.update_logs WHERE id = ?;";
 
+    private static String depozitquery="select sum(final_amo) as total_amount from deposits where status=1 and created_at between '2023-12-13 18:20:09' And '2023-12-13 18:36:05';";
+    public static String getDepozitquery() {
+        return depozitquery;
+    }
+    private static String installmentsquery="select sum(delay_charge) as total_delay_charge  from installments where loan_id = 1 group by loan_id;";
+    public static String getinstallmentsquery() {
+        return installmentsquery;
+    }
+    private static String loan_plansquery="select name from loan_plans order by delay_value, fixed_charge desc,percent_charge desc limit 3;";
+    public static String getloan_plansquery() {
+        return  loan_plansquery;
+    }
+
 
 
 
