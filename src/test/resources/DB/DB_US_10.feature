@@ -1,8 +1,9 @@
 Feature: Data Testing
-  Background: Database baglantisi kurulur
-  @DB
+
+  @10
   Scenario:Database üzerinde "divice_tokens" tablosuna istenen veriyi tek sorguda ekleyiniz.
 
-    Then Cron schedules icin gerekli query hazirlanir
-    And resultset ile donen data dogrulanir
+    When Database bağlantisi kurulur.
+    Then  diviceTokensQuery hazirlanir
+    And  datanin eklendigi dogrulanir
     Then database connection kapatilir

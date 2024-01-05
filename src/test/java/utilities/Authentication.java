@@ -22,7 +22,7 @@ public class Authentication {
     public static RequestSpecification spec;
     public static String createToken(String pathParamsUri) {
 
-        if (spec == null) {
+
 
             switch (pathParamsUri) {
 
@@ -54,7 +54,7 @@ public class Authentication {
                     dataAdminCreate.put("username", ConfigurationReader.getProperty("usernameAdmin"));
                     dataAdminCreate.put("password", ConfigurationReader.getProperty("passwordAdmin"));
 
-                    Response responseAdmin = given().contentType(ContentType.JSON)
+                    Response responseAdmin = given().contentType(ContentType.JSON).headers("accept","application/json")
                             .spec(spec).when().body(dataAdminCreate).post("/{first}/{second}");
 
 
@@ -63,7 +63,7 @@ public class Authentication {
                     System.out.println("tokenAdmin = " + token);
                     break;
             }
-        }
+
 
         return token;
 
