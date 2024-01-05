@@ -96,5 +96,26 @@ public class DB_Manage {
 
     }
 
+    //murat US_15
+    private String subscribersEmailNotLike = "select * from subscribers where email not like '%a%';";
+
+    public String getSubscribersEmailNotLike() {
+        return subscribersEmailNotLike;
+    }
+
+    //murat US_19
+    private String usersOrderByLastnameAscFirstnameDesc = "select lastname,firstname from users where lastname is not null order by lastname asc, firstname DESC;";
+
+    public String getUsersOrderByLastnameAscFirstnameDesc() {
+        return usersOrderByLastnameAscFirstnameDesc;
+    }
+
+    //murat US_20
+    private String transactionsRemarkSumAmount = "select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
+
+    public String getTransactionsRemarkSumAmount() {
+        return transactionsRemarkSumAmount;
+
+    }
 
 }
