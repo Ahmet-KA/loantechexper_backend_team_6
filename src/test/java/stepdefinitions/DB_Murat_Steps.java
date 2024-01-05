@@ -1,29 +1,23 @@
 package stepdefinitions;
 
-import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
 import utilities.DBUtils;
 import utilities.DB_Manage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
+
 
 public class DB_Murat_Steps {
 
     DB_Manage manage = new DB_Manage();
     String query;
-    ResultSet rs;
-    int id;
-    int user_id;
-    int plan_id;
-    String loan_number;
-    Faker faker = new Faker();
-    PreparedStatement preparedStatement;
+    ResultSet rs = null;
+
 
     //================= US 15 ========================
 
@@ -52,25 +46,43 @@ public class DB_Murat_Steps {
 
     //================= US 19 ========================
 
-    @Given("usersOrderByLastnameAscFirstnameDesc query hazirlanir")
+    @Given("users tablosunu lastname gore siralama sorgusu hazirlanir ve sorgu sonucu listelenir")
     public void usersOrderByLastnameAscFirstnameDesc_query_hazirlanir() throws SQLException {
         query = manage.getUsersOrderByLastnameAscFirstnameDesc();
         rs = DBUtils.getStatement().executeQuery(query);
+        System.out.println(DBUtils.getColumnData(query, "lastname"));
     }
 
-    @Given("UsersFirstLastnameInList query hazirlanir")
-    public void users_first_lastname_ın_list_query_hazirlanir() throws SQLException {
-        query = manage.getUsersFirstLastnameInList();
-        rs = DBUtils.getStatement().executeQuery(query);
+    @Given("users listesindeki ilk soyadi dogrulanir")
+    public void usersListesiIlkSoyadiDogrula() throws SQLException {
+        String expectedValue = "ABSHIREBATZ";
+        String actuelValue = DBUtils.getColumnData(query, "lastname").get(0).toString();
+
+        assertEquals(expectedValue, actuelValue);
     }
 
     //================ US 20 =========================
 
-    @Given("transactionsRemarkSumAmount query hazirlanir")
+    List<List<Object>> istenenRemarkListesi;
+
+    @Given("transactionsRemarkSumAmount query hazirlanir ve sorgu sonucu listelenir")
     public void transactions_remark_sum_amounte_query_hazirlanir() throws SQLException {
 
         query = manage.getTransactionsRemarkSumAmount();
-        rs = DBUtils.getStatement().executeQuery(query);
+        istenenRemarkListesi = DBUtils.getQueryResultList(query);
+        for (List<Object> each : istenenRemarkListesi) {
+            System.out.println(each);
+        }
     }
 
+    @Given("total_amount 1000 $dan yuksek olanlar dogrulanir")
+    public void total_amount_$dan_yuksek_olanlar_dogrulanir() {
+
+        for (List<Object> each : istenenRemarkListesi) {
+            double remarkTotalAmount = ((Number) each.get(1)).doubleValue();
+            // Object'i Number'a  sonra double'a dönüştür,
+
+            assertTrue(remarkTotalAmount > 1000);
+        }
+    }
 }

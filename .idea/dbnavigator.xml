@@ -13,16 +13,20 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+      <console name="Connection" type="STANDARD" schema="u168183796_qaloantec" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
+<<<<<<< HEAD
+    <open-files />
+=======
     <open-files>
       <object connection-id="e9b48050-9192-4a8c-ac99-8f6446c06a24" object-ref="consoles/Connection" />
     </open-files>
+>>>>>>> main
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="e9b48050-9192-4a8c-ac99-8f6446c06a24" />

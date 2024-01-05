@@ -1,3 +1,4 @@
+
 Feature: "users" tablosundaki tum kayitlari "lastname"  sirali,"firstname" Ters sirali olarak listeleyin.Listedeki ilk soyadını dogrulayınız.
 
 
@@ -5,10 +6,8 @@ Feature: "users" tablosundaki tum kayitlari "lastname"  sirali,"firstname" Ters 
     * Database bağlantisi kurulur.
 
 
-  Scenario: "users" tablosundaki tum kayitlari "lastname" sirali,"firstname" Ters sirali olarak listelenir.Listedeki ilk soyadı dogrulanir
+  Scenario: "users" tablosundaki tum kayitlari "lastname" sirali,"firstname" Ters sirali olarak listelenir.Listedeki ilk soyadi dogrulanir
 
-    * usersOrderByLastnameAscFirstnameDesc query hazirlanir
-
-    * UsersFirstLastnameInList query hazirlanir
-
+    * users tablosunu lastname gore siralama sorgusu hazirlanir ve sorgu sonucu listelenir
+    * users listesindeki ilk soyadi dogrulanir
     * database connection kapatilir

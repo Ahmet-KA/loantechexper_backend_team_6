@@ -109,6 +109,9 @@ public class DB_Manage {
     }
 
 
+    //murat US_15
+
+
     public static String getAdminNotificationsSelect() {
         return adminNotificationsSelect;
     }
@@ -123,6 +126,7 @@ public class DB_Manage {
 
 
     //murat
+
     private String subscribersEmailNotLike = "select * from subscribers where email not like '%a%';";
 
 
@@ -130,26 +134,21 @@ public class DB_Manage {
         return subscribersEmailNotLike;
     }
 
-    //murat
-    private String usersOrderByLastnameAscFirstnameDesc = "select * from users order by lastname asc, firstname DESC;";
+    //murat US_19
+    private String usersOrderByLastnameAscFirstnameDesc = "select lastname,firstname from users where lastname is not null order by lastname asc, firstname DESC;";
 
-    public String getUsersOrderByLastnameAscFirstnameDesc () {
+    public String getUsersOrderByLastnameAscFirstnameDesc() {
         return usersOrderByLastnameAscFirstnameDesc;
     }
 
-    //murat
-    private String UsersFirstLastnameInList = " select lastname from users where lastname is not null order by lastname asc, firstname DESC LIMIT 1;";
-
-    public String getUsersFirstLastnameInList() {
-        return UsersFirstLastnameInList;
-    }
-
-    //murat
-    private String transactionsRemarkSumAmount = " select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
+    //murat US_20
+    private String transactionsRemarkSumAmount = "select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
 
     public String getTransactionsRemarkSumAmount() {
         return transactionsRemarkSumAmount;
     }
+
+
 
     private static String adminNotificationsUserIdSelect="select * from admin_notifications Where user_id=1 AND id  > 20;";
 
@@ -220,6 +219,7 @@ public class DB_Manage {
     //Gulay
 
     private static String  updateLogDeleteQuery = "DELETE FROM u168183796_qaloantec.update_logs WHERE id = ?;";
+
 
 
 

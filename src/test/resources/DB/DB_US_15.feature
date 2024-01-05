@@ -1,3 +1,4 @@
+
 Feature:"Subscribers" tablosunda "email" datalarında  "a"  içermeyen dataları listeleyiniz.
 
   Background: Database bağlantısı yapılır
