@@ -109,9 +109,6 @@ public class DB_Manage {
     }
 
 
-    //murat US_15
-
-
     public static String getAdminNotificationsSelect() {
         return adminNotificationsSelect;
     }
@@ -126,7 +123,6 @@ public class DB_Manage {
 
 
     //murat
-
     private String subscribersEmailNotLike = "select * from subscribers where email not like '%a%';";
 
 
@@ -134,21 +130,26 @@ public class DB_Manage {
         return subscribersEmailNotLike;
     }
 
-    //murat US_19
-    private String usersOrderByLastnameAscFirstnameDesc = "select lastname,firstname from users where lastname is not null order by lastname asc, firstname DESC;";
+    //murat
+    private String usersOrderByLastnameAscFirstnameDesc = "select * from users order by lastname asc, firstname DESC;";
 
-    public String getUsersOrderByLastnameAscFirstnameDesc() {
+    public String getUsersOrderByLastnameAscFirstnameDesc () {
         return usersOrderByLastnameAscFirstnameDesc;
     }
 
-    //murat US_20
-    private String transactionsRemarkSumAmount = "select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
+    //murat
+    private String UsersFirstLastnameInList = " select lastname from users where lastname is not null order by lastname asc, firstname DESC LIMIT 1;";
+
+    public String getUsersFirstLastnameInList() {
+        return UsersFirstLastnameInList;
+    }
+
+    //murat
+    private String transactionsRemarkSumAmount = " select remark, sum(amount) as total_amount from transactions group by remark having total_amount > 1000;";
 
     public String getTransactionsRemarkSumAmount() {
         return transactionsRemarkSumAmount;
     }
-
-
 
     private static String adminNotificationsUserIdSelect="select * from admin_notifications Where user_id=1 AND id  > 20;";
 
@@ -220,18 +221,24 @@ public class DB_Manage {
 
     private static String  updateLogDeleteQuery = "DELETE FROM u168183796_qaloantec.update_logs WHERE id = ?;";
 
-    private static String depozitquery="select sum(final_amo) as total_amount from deposits where status=1 and created_at between '2023-12-13 18:20:09' And '2023-12-13 18:36:05';";
-    public static String getDepozitquery() {
-        return depozitquery;
-    }
-    private static String installmentsquery="select sum(delay_charge) as total_delay_charge  from installments where loan_id = 1 group by loan_id;";
-    public static String getinstallmentsquery() {
-        return installmentsquery;
-    }
-    private static String loan_plansquery="select name from loan_plans order by delay_value, fixed_charge desc,percent_charge desc limit 3;";
-    public static String getloan_plansquery() {
-        return  loan_plansquery;
-    }
+
+
+
+
+
+
+//Hakan
+    //US07
+    private static String supportTickets="select * from support_tickets Where ticket LIKE '4%';";
+    public static String getSupportTickets(){return supportTickets;}
+    //US11
+    private static String adminNotificationsVerification ="SELECT COUNT(*) AS unreadCount FROM admin_notifications WHERE user_id = 1 AND is_read = 0;";
+    public static String getAdminNotificationsVerification(){return adminNotificationsVerification;}
+    //US17
+    private static String usersUpdate="UPDATE users SET mobile = '2453' WHERE SUBSTRING(username, -2, 1) = 'e';";
+    public static String getUsersUpdate(){return usersUpdate;}
+
+
 
 
 
